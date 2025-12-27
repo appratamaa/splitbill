@@ -303,9 +303,9 @@
                 <div class="grid grid-cols-2 gap-6 mb-8">
                     <div>
                         <label class="block text-xs font-bold text-slate-500 uppercase mb-2">Pajak (%)</label>
-                        <input type="number" id="tax-input"
+                        <input type="text" id="tax-input" inputmode="numeric"
                             class="input-clean w-full rounded-xl px-4 py-3 font-bold font-numbers" value="10"
-                            oninput="saveLocal()">
+                            placeholder="0" oninput="formatOnlyNumber(this); saveLocal()">
                     </div>
                     <div>
                         <label class="block text-xs font-bold text-slate-500 uppercase mb-2">Service (Rp)</label>
@@ -628,24 +628,50 @@
             syncGlobalItems();
         });
 
-        // --- UTILS ---
-        // GANTI FUNGSI INI
-        const formatRupiah = (el) => {
-            // 1. Hapus SEMUA karakter yang bukan angka (huruf, simbol, spasi hilang instan)
-            let val = el.value.replace(/[^0-9]/g, '');
+        // --- UTILS (UPDATE TOTAL) ---
 
-            // 2. Format jadi ribuan (titik)
+        // 1. Format Rupiah (Angka 0-9 saja, otomatis ada titik ribuan)
+        // Dipakai untuk: Harga Produk, Service, Min Belanja
+        const formatRupiah = (el) => {
+            let val = el.value.replace(/[^0-9]/g, ''); // Hapus SEMUA kecuali angka
             if (val) {
                 el.value = parseInt(val).toLocaleString('id-ID').replace(/,/g, '.');
             } else {
-                el.value = ""; // Kalau kosong, biarkan kosong
+                el.value = "";
             }
         }
-        const formatDiscountInput = (el) => {
-            if (el.value.includes('%')) return;
-            formatRupiah(el);
+
+        // 2. Format Angka Murni (Angka 0-9 saja, TANPA titik)
+        // Dipakai untuk: Pajak (%), Qty Produk, Qty Voucher
+        const formatOnlyNumber = (el) => {
+            el.value = el.value.replace(/[^0-9]/g, ''); // Hapus huruf/simbol/titik/koma
         }
-        const cleanRupiah = (str) => (!str) ? 0 : parseFloat(str.toString().replace(/\./g, '')) || 0;
+
+        // 3. Format Khusus Diskon (Angka 0-9 DAN %)
+        // Dipakai untuk: Diskon Voucher
+        const formatDiscountValid = (el) => {
+            // Hanya izinkan angka dan simbol persen
+            let val = el.value.replace(/[^0-9%]/g, '');
+
+            // Logika: Jika ada %, biarkan apa adanya. Jika tidak ada %, format sebagai Rupiah
+            if (val.includes('%')) {
+                // Cegah persen ganda (misal 10%%)
+                let parts = val.split('%');
+                if (parts.length > 2) val = parts[0] + '%';
+                el.value = val;
+            } else {
+                // Format Rupiah (ribuan)
+                if (val) {
+                    el.value = parseInt(val).toLocaleString('id-ID').replace(/,/g, '.');
+                } else {
+                    el.value = "";
+                }
+            }
+        }
+
+        // Helper untuk membersihkan format saat kalkulasi
+        const cleanRupiah = (str) => (!str) ? 0 : parseFloat(str.toString().replace(/[^0-9]/g, '')) ||
+        0; // Ubah regex agar aman
         const fmtMoney = (n) => "Rp " + Math.round(n).toLocaleString('id-ID').replace(/,/g, '.');
         const formatNumberDots = (numStr) => {
             if (!numStr) return '0';
@@ -827,24 +853,43 @@
                 const el = document.createElement('div');
                 el.className = "bg-slate-50 p-3 rounded-xl border border-slate-200 relative mb-2";
                 el.innerHTML = `
-                    <div class="grid grid-cols-12 gap-2 w-full">
-                        <div class="col-span-3">
-                            <input type="text" value="${v.code}" class="w-full text-xs font-bold text-slate-800 uppercase outline-none bg-white border border-slate-200 rounded px-2 py-1 focus:border-indigo-500" oninput="this.value = this.value.toUpperCase(); vouchers[${idx}].code=this.value; saveLocal();">
-                        </div>
-                        <div class="col-span-3">
-                            <input type="text" value="${v.discount}" class="w-full text-xs font-bold text-emerald-600 text-right outline-none bg-white border border-slate-200 rounded px-2 py-1 focus:border-emerald-500 font-numbers" onkeyup="formatDiscountInput(this); vouchers[${idx}].discount=this.value; saveLocal();">
-                        </div>
-                        <div class="col-span-3">
-                            <input type="text" value="${v.min_spend}" class="w-full text-xs text-slate-600 text-right outline-none bg-white border border-slate-200 rounded px-2 py-1 focus:border-indigo-500 font-numbers" onkeyup="formatRupiah(this); vouchers[${idx}].min_spend=this.value; saveLocal();">
-                        </div>
-                        <div class="col-span-2">
-                             <input type="number" value="${v.qty || 1}" class="w-full text-xs text-center font-bold text-slate-700 outline-none bg-white border border-slate-200 rounded px-1 py-1 focus:border-indigo-500 font-numbers" min="0" onchange="vouchers[${idx}].qty=this.value; saveLocal();">
-                        </div>
-                        <div class="col-span-1 flex items-center justify-end">
-                             <button onclick="vouchers.splice(${idx},1); renderVoucherManager(); saveLocal();" class="text-red-400 hover:text-red-600"><i class="fa-solid fa-trash"></i></button>
-                        </div>
-                    </div>
-                `;
+            <div class="grid grid-cols-12 gap-2 w-full">
+                <div class="col-span-3">
+                    <input type="text" value="${v.code}" class="w-full text-xs font-bold text-slate-800 uppercase outline-none bg-white border border-slate-200 rounded px-2 py-1 focus:border-indigo-500" placeholder="KODE" oninput="this.value = this.value.toUpperCase(); vouchers[${idx}].code=this.value; saveLocal();">
+                </div>
+                
+                <div class="col-span-3">
+                    <input type="text" 
+                           inputmode="numeric"
+                           value="${v.discount}" 
+                           class="w-full text-xs font-bold text-emerald-600 text-right outline-none bg-white border border-slate-200 rounded px-2 py-1 focus:border-emerald-500 font-numbers" 
+                           placeholder="0"
+                           oninput="formatDiscountValid(this); vouchers[${idx}].discount=this.value; saveLocal();">
+                </div>
+                
+                <div class="col-span-3">
+                    <input type="text" 
+                           inputmode="numeric"
+                           value="${v.min_spend}" 
+                           class="w-full text-xs text-slate-600 text-right outline-none bg-white border border-slate-200 rounded px-2 py-1 focus:border-indigo-500 font-numbers" 
+                           placeholder="0"
+                           oninput="formatRupiah(this); vouchers[${idx}].min_spend=this.value; saveLocal();">
+                </div>
+                
+                <div class="col-span-2">
+                     <input type="text" 
+                            inputmode="numeric"
+                            value="${v.qty || 1}" 
+                            class="w-full text-xs text-center font-bold text-slate-700 outline-none bg-white border border-slate-200 rounded px-1 py-1 focus:border-indigo-500 font-numbers" 
+                            placeholder="1" 
+                            oninput="formatOnlyNumber(this); vouchers[${idx}].qty=this.value; saveLocal();">
+                </div>
+                
+                <div class="col-span-1 flex items-center justify-end">
+                     <button onclick="vouchers.splice(${idx},1); renderVoucherManager(); saveLocal();" class="text-red-400 hover:text-red-600"><i class="fa-solid fa-trash"></i></button>
+                </div>
+            </div>
+        `;
                 list.appendChild(el);
             });
         }
