@@ -1,60 +1,131 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+<div align="center">
+
+# 🧾 Split Bill Optimizer
+### Studi Komparasi Algoritma 0/1 Knapsack: Iteratif vs Rekursif
+
+![Laravel](https://img.shields.io/badge/Laravel-11-FF2D20?style=for-the-badge&logo=laravel&logoColor=white)
+![TailwindCSS](https://img.shields.io/badge/Tailwind-CSS-38B2AC?style=for-the-badge&logo=tailwind-css&logoColor=white)
+![Algorithm](https://img.shields.io/badge/Algorithm-0%2F1%20Knapsack-orange?style=for-the-badge)
+![Status](https://img.shields.io/badge/Status-Final%20Project-success?style=for-the-badge)
 
 <p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
+  <img src="https://capsule-render.vercel.app/api?type=waving&color=indigo&height=200&section=header&text=eksten.&fontSize=80&fontAlign=50&fontAlignY=35&desc=Optimasi%20Diskon%20Split%20Bill&descAlign=50&descAlignY=60&animation=fadeIn" alt="Header Image" />
 </p>
 
-## About Laravel
+Aplikasi web modern untuk menghitung pembagian tagihan (split bill) sekaligus mengoptimalkan penggunaan voucher diskon menggunakan pendekatan **Algoritma 0/1 Knapsack**. Proyek ini bertujuan membandingkan efisiensi performa (*running time*) antara pendekatan **Iteratif (Dynamic Programming)** dan **Rekursif (Memoization)**.
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+[Lihat Demo Aplikasi](https://eksten.koyeb.app/) · [Lapor Bug](https://github.com/appratamaa/splitbill/issues)
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+</div>
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+---
 
-## Learning Laravel
+## 🏫 Identitas Akademik
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+Proyek ini disusun untuk memenuhi **Tugas Besar Mata Kuliah Analisis Kompleksitas Algoritma (AKA)**.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+| Entitas | Detail |
+| :--- | :--- |
+| **Kelas** | IF-48-11 |
+| **Kelompok** | **"eksten"** |
+| **Dosen Pengampu** | **Dr. Z K ABDURAHMAN BAIZAL, S.Si., M.Kom.** |
 
-## Laravel Sponsors
+### 👥 Anggota Tim
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+<div align="center">
 
-### Premium Partners
+| NIM | Nama Mahasiswa | Peran |
+| :---: | :--- | :--- |
+| **103012580051** | **Andre Putra Pratama** | *Fullstack Developer & Algorithm Analyst* |
+| **103012500135** | **Ardiya Malik Jaelani** | *Frontend Designer & Documentation* |
+| **103012500133** | **Rafie Novianto Sudrajat** | *Quality Assurance & Testing* |
 
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
+</div>
 
-## Contributing
+---
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+## ✨ Fitur Utama
 
-## Code of Conduct
+Aplikasi ini tidak hanya sekadar kalkulator, tetapi juga alat analisis algoritma:
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+* 📦 **Manajemen Produk:** Input dinamis untuk nama produk, harga, dan kuantitas.
+* 👥 **Manajemen Anggota:** Tambah anggota dan tetapkan item yang mereka pesan secara spesifik.
+* 🎫 **Optimasi Voucher (Knapsack):** Menentukan kombinasi voucher terbaik untuk mendapatkan diskon maksimal berdasarkan total belanja (Kapasitas W).
+* 📊 **Analisis Real-time:** Grafik interaktif (Chart.js) yang membandingkan kecepatan eksekusi algoritma Iteratif vs Rekursif.
+* 🧾 **Cetak Struk:** Generate struk tagihan resmi yang bisa dicetak atau diunduh sebagai gambar.
+* 📱 **Responsif UI:** Tampilan yang optimal baik di Desktop, Tablet, maupun Mobile.
 
-## Security Vulnerabilities
+---
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+## 🧠 Analisis Algoritma
 
-## License
+Kami menerapkan **0/1 Knapsack Problem** di mana:
+* **Weight (W):** Syarat minimum belanja voucher.
+* **Value (V):** Nominal potongan harga.
+* **Capacity (C):** Total subtotal belanja pengguna.
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
-# splitbill
+### Perbandingan Pendekatan
+
+| Metrik | Iteratif (Tabulasi) | Rekursif (Memoization) |
+| :--- | :--- | :--- |
+| **Kompleksitas Waktu** | $O(N \cdot W)$ | $O(N \cdot W)$ |
+| **Kompleksitas Ruang** | $O(N \cdot W)$ (Tabel DP) | $O(N \cdot W)$ + Stack Overhead |
+| **Karakteristik** | Stabil, menghindari *stack overflow*. | Kode lebih ringkas, namun berisiko pada input besar. |
+
+---
+
+## 🛠️ Teknologi yang Digunakan
+
+* **Backend:** [Laravel 11](https://laravel.com) (PHP 8.2)
+* **Frontend:** Blade Template, [Tailwind CSS](https://tailwindcss.com)
+* **Interaktivitas:** JavaScript (Fetch API), [Chart.js](https://www.chartjs.org/), [AutoAnimate](https://auto-animate.formkit.com/)
+* **Efek Visual:** Canvas Confetti, Glassmorphism UI
+* **Deployment:** Koyeb (Docker Container)
+
+---
+
+## 🚀 Instalasi Lokal
+
+Ingin menjalankan proyek ini di komputer Anda? Ikuti langkah berikut:
+
+1.  **Clone Repositori**
+    ```bash
+    git clone [https://github.com/appratamaa/splitbill.git](https://github.com/appratamaa/splitbill.git)
+    cd splitbill
+    ```
+
+2.  **Install Dependensi**
+    ```bash
+    composer install
+    npm install
+    ```
+
+3.  **Setup Environment**
+    Salin file `.env.example` menjadi `.env` dan atur database (SQLite direkomendasikan untuk simpel).
+    ```bash
+    cp .env.example .env
+    php artisan key:generate
+    touch database/database.sqlite
+    ```
+    *Pastikan `DB_CONNECTION=sqlite` di file .env*
+
+4.  **Migrasi Database**
+    ```bash
+    php artisan migrate
+    ```
+
+5.  **Jalankan Server**
+    ```bash
+    npm run build
+    php artisan serve
+    ```
+    Buka browser dan akses `http://localhost:8000`
+
+---
+
+<div align="center">
+
+### Dibuat dengan ❤️ oleh Kelompok Eksten
+*Telkom University - 2025*
+
+</div>
