@@ -309,9 +309,9 @@
                     </div>
                     <div>
                         <label class="block text-xs font-bold text-slate-500 uppercase mb-2">Service (Rp)</label>
-                        <input type="text" id="service-input"
-                            class="input-clean w-full rounded-xl px-4 py-3 font-bold font-numbers" placeholder="0"
-                            onkeyup="formatRupiah(this); saveLocal()">
+                        <input type="text" id="service-input" inputmode="numeric"
+                            class="input-clean w-full rounded-lg px-4 py-3 font-bold font-numbers" placeholder="0"
+                            oninput="formatRupiah(this); saveLocal()">
                     </div>
                 </div>
 
@@ -629,9 +629,17 @@
         });
 
         // --- UTILS ---
+        // GANTI FUNGSI INI
         const formatRupiah = (el) => {
+            // 1. Hapus SEMUA karakter yang bukan angka (huruf, simbol, spasi hilang instan)
             let val = el.value.replace(/[^0-9]/g, '');
-            if (val) el.value = parseInt(val).toLocaleString('id-ID').replace(/,/g, '.');
+
+            // 2. Format jadi ribuan (titik)
+            if (val) {
+                el.value = parseInt(val).toLocaleString('id-ID').replace(/,/g, '.');
+            } else {
+                el.value = ""; // Kalau kosong, biarkan kosong
+            }
         }
         const formatDiscountInput = (el) => {
             if (el.value.includes('%')) return;
@@ -648,6 +656,7 @@
         }
 
         // --- PRODUCTS ---
+        // GANTI FUNGSI INI SEPENUHNYA
         function addProductRow(n = '', q = 1, p = '') {
             const tbody = document.getElementById('product-list');
             const id = 'item_' + Date.now() + Math.random().toString(36).substr(2, 5);
@@ -655,24 +664,30 @@
             row.dataset.id = id;
 
             row.innerHTML = `
-                <td class="pl-6 pr-1 md:px-4 py-2 md:py-3 align-top">
-                    <input type="text" value="${n}" class="input-clean w-full rounded-lg px-2 md:px-3 py-2 text-xs md:text-sm font-semibold text-slate-700 placeholder-slate-300 transition" placeholder="Item..." oninput="syncGlobalItems()">
-                </td>
-                <td class="px-1 md:px-4 py-2 md:py-3 align-top">
-                    <input type="number" value="${q}" class="input-clean w-full rounded-lg px-1 py-2 text-xs md:text-sm text-center font-bold font-numbers text-slate-600" min="1" oninput="syncGlobalItems()">
-                </td>
-                <td class="px-1 md:px-4 py-2 md:py-3 align-top">
-                    <div class="relative">
-                        <span class="absolute left-2 md:left-3 top-2 text-slate-400 text-[10px] md:text-xs font-bold font-numbers">Rp</span>
-                        <input type="text" value="${p}" class="input-clean w-full rounded-lg pl-7 md:pl-9 pr-2 md:pr-3 py-2 text-xs md:text-sm text-right font-bold font-numbers text-slate-700" placeholder="0" onkeyup="formatRupiah(this); syncGlobalItems()">
-                    </div>
-                </td>
-                <td class="pl-1 pr-6 md:px-2 py-2 md:py-3 align-top text-center flex items-center justify-center h-full pt-3 md:pt-2">
-                    <button onclick="this.closest('tr').remove(); syncGlobalItems()" class="text-slate-300 hover:text-red-500 transition w-8 h-8 flex items-center justify-center rounded-full hover:bg-red-50">
-                        <i class="fa-solid fa-trash-can text-sm"></i>
-                    </button>
-                </td>
-            `;
+        <td class="pl-6 pr-1 md:px-4 py-2 md:py-3 align-top">
+            <input type="text" value="${n}" class="input-clean w-full rounded-lg px-2 md:px-3 py-2 text-xs md:text-sm font-semibold text-slate-700 placeholder-slate-300 transition" placeholder="Item..." oninput="syncGlobalItems()">
+        </td>
+        <td class="px-1 md:px-4 py-2 md:py-3 align-top">
+            <input type="number" value="${q}" class="input-clean w-full rounded-lg px-1 py-2 text-xs md:text-sm text-center font-bold font-numbers text-slate-600" min="1" oninput="syncGlobalItems()">
+        </td>
+        <td class="px-1 md:px-4 py-2 md:py-3 align-top">
+            <div class="relative">
+                <span class="absolute left-2 md:left-3 top-2 text-slate-400 text-[10px] md:text-xs font-bold font-numbers">Rp</span>
+                
+                <input type="text" 
+                       inputmode="numeric" 
+                       value="${p}" 
+                       class="input-clean w-full rounded-lg pl-7 md:pl-9 pr-2 md:pr-3 py-2 text-xs md:text-sm text-right font-bold font-numbers text-slate-700" 
+                       placeholder="0" 
+                       oninput="formatRupiah(this); syncGlobalItems()"> 
+                       </div>
+        </td>
+        <td class="pl-1 pr-6 md:px-2 py-2 md:py-3 align-top text-center flex items-center justify-center h-full pt-3 md:pt-2">
+            <button onclick="this.closest('tr').remove(); syncGlobalItems()" class="text-slate-300 hover:text-red-500 transition w-8 h-8 flex items-center justify-center rounded-full hover:bg-red-50">
+                <i class="fa-solid fa-trash-can text-sm"></i>
+            </button>
+        </td>
+    `;
             tbody.appendChild(row);
             syncGlobalItems();
         }
