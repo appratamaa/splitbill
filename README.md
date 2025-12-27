@@ -14,7 +14,7 @@
 
 Aplikasi web modern untuk menghitung pembagian tagihan (split bill) sekaligus mengoptimalkan penggunaan voucher diskon menggunakan pendekatan **Algoritma 0/1 Knapsack**. Proyek ini bertujuan membandingkan efisiensi performa (*running time*) antara pendekatan **Iteratif (Dynamic Programming)** dan **Rekursif (Memoization)**.
 
-[Lihat Demo Aplikasi](https://eksten.koyeb.app/) · [Lapor Bug](https://github.com/appratamaa/splitbill/issues)
+[Lihat Demo Aplikasi](https://tubes-aka-splitbill-appratama-a8777cc0.koyeb.app/) · [Lapor Bug](https://github.com/appratamaa/splitbill/issues)
 
 </div>
 
@@ -27,7 +27,7 @@ Proyek ini disusun untuk memenuhi **Tugas Besar Mata Kuliah Analisis Kompleksita
 | Entitas | Detail |
 | :--- | :--- |
 | **Kelas** | IF-48-11 |
-| **Kelompok** | **"eksten"** |
+| **Kelompok** | **eksten** |
 | **Dosen Pengampu** | **Dr. Z K ABDURAHMAN BAIZAL, S.Si., M.Kom.** |
 
 ### 👥 Anggota Tim
@@ -90,7 +90,7 @@ Ingin menjalankan proyek ini di komputer Anda? Ikuti langkah berikut:
 
 1.  **Clone Repositori**
     ```bash
-    git clone [https://github.com/appratamaa/splitbill.git](https://github.com/appratamaa/splitbill.git)
+    git clone https://github.com/appratamaa/splitbill.git
     cd splitbill
     ```
 
@@ -125,7 +125,7 @@ Ingin menjalankan proyek ini di komputer Anda? Ikuti langkah berikut:
 
 <div align="center">
 
-### Dibuat dengan ❤️ oleh Kelompok Eksten
+### Dibuat dengan ❤️ oleh Kelompok eksten
 *Telkom University - 2025*
 
 </div>
