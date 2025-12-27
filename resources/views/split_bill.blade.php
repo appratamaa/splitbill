@@ -498,7 +498,7 @@
                     class="text-indigo-600">.</span></h1>
         </div>
         <p id="loading-text" class="text-slate-500 text-xs font-bold uppercase tracking-[0.3em] mt-4">Memuat
-            Aplikasi...</p>
+            Split Bill...</p>
     </div>
 
     <div id="success-modal" class="hidden fixed inset-0 z-[60] flex items-center justify-center px-4">
