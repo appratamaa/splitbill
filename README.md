@@ -9,7 +9,7 @@
 ![Status](https://img.shields.io/badge/Status-Final%20Project-success?style=for-the-badge)
 
 <p align="center">
-  <img src="https://capsule-render.vercel.app/api?type=waving&color=indigo&height=200&section=header&text=eksten.&fontSize=80&fontAlign=50&fontAlignY=35&desc=Optimasi%20Diskon%20Split%20Bill&descAlign=50&descAlignY=60&animation=fadeIn" alt="Header Image" />
+  <img src="https://capsule-render.vercel.app/api?type=waving&color=4F46E5&height=200&section=header&text=eksten.&fontSize=80&fontAlign=50&fontAlignY=35&desc=Optimasi%20Diskon%20Split%20Bill&descAlign=50&descAlignY=60&animation=fadeIn" alt="Header Image" />
 </p>
 
 Aplikasi web modern untuk menghitung pembagian tagihan (split bill) sekaligus mengoptimalkan penggunaan voucher diskon menggunakan pendekatan **Algoritma 0/1 Knapsack**. Proyek ini bertujuan membandingkan efisiensi performa (*running time*) antara pendekatan **Iteratif (Dynamic Programming)** dan **Rekursif (Memoization)**.
@@ -36,9 +36,9 @@ Proyek ini disusun untuk memenuhi **Tugas Besar Mata Kuliah Analisis Kompleksita
 
 | NIM | Nama Mahasiswa | Peran |
 | :---: | :--- | :--- |
-| **103012580051** | **Andre Putra Pratama** | *Fullstack Developer & Algorithm Analyst* |
-| **103012500135** | **Ardiya Malik Jaelani** | *Frontend Designer & Documentation* |
-| **103012500133** | **Rafie Novianto Sudrajat** | *Quality Assurance & Testing* |
+| **103012580051** | **ANDRE PUTRA PRATAMA, A.Md.Kom.** | *MAHASISWA* |
+| **103012500135** | **ARDIYA MALIK JAELANI, A.Md.Kom.** | *MAHASISWA* |
+| **103012500133** | **RAFIE NOVIANTO SUDRAJAT, A.Md.Kom.** | *MAHASISWA* |
 
 </div>
 
