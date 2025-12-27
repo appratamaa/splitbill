@@ -1,11 +1,21 @@
-<!DOCTYPE html>
-<html lang="id">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Optimasi Diskon Split Bill: Studi Iteratif vs Rekursif - eksten</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
+
+    <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%234F46E5'/%3E%3Ctext x='50%25' y='50%25' dy='.35em' text-anchor='middle' font-family='sans-serif' font-weight='800' font-size='32' fill='white'%3ESP%3C/text%3E%3C/svg%3E">
+
+    <meta name="description" content="Aplikasi optimasi pembagian bill menggunakan Algoritma 0/1 Knapsack. Bandingkan efisiensi pendekatan Iteratif vs Rekursif secara real-time.">
     
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://eksten.koyeb.app/"> <meta property="og:title" content="Split Bill Optimizer - eksten">
+    <meta property="og:description" content="Hitung diskon maksimal & bagi tagihan otomatis dengan algoritma Knapsack. Studi kasus Tugas Besar AKA.">
+    <meta property="og:image" content="https://placehold.co/1200x630/4f46e5/ffffff?text=Split+Bill+Optimizer&font=poppins"> <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://eksten.koyeb.app/"> <meta property="twitter:title" content="Split Bill Optimizer - eksten">
+    <meta property="twitter:description" content="Analisis kompleksitas algoritma Knapsack (Iteratif vs Rekursif) pada kasus pembagian bill.">
+    <meta property="twitter:image" content="https://placehold.co/1200x630/4f46e5/ffffff?text=Split+Bill+Optimizer&font=poppins">
+
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
@@ -57,12 +67,19 @@
         }
         .btn-qty:disabled { opacity: 0.3; cursor: not-allowed; }
         
-        .loader {
-            border: 3px solid #E2E8F0; border-top: 3px solid #6366f1;
-            border-radius: 50%; width: 48px; height: 48px;
-            animation: spin 1s linear infinite;
+        /* GANTI CSS LOADER LAMA KE TEKS ANIMASI */
+        .loading-text span {
+            display: inline-block;
+            animation: bounce 1.4s infinite ease-in-out both;
         }
-        @keyframes spin { 100% { transform: rotate(360deg); } }
+        .loading-text span:nth-child(1) { animation-delay: -0.32s; }
+        .loading-text span:nth-child(2) { animation-delay: -0.16s; }
+        
+        @keyframes bounce {
+            0%, 80%, 100% { transform: scale(0); }
+            40% { transform: scale(1); }
+        }
+
         .fade-in { animation: fadeIn 0.6s ease-out; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
 
@@ -97,7 +114,7 @@
                     <i class="fa-solid fa-file-invoice-dollar"></i>
                 </div>
                 <div>
-                    <h1 class="font-bold text-xl leading-none text-slate-800">SplitBill</h1>
+                    <h1 class="font-bold text-xl leading-none text-slate-800">Split Bill</h1>
                     <span class="text-xs font-bold text-indigo-500 tracking-widest lowercase">eksten</span>
                 </div>
             </div>
@@ -126,20 +143,23 @@
                     </div>
                 </div>
 
-                <div class="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm mb-4">
-                    <table class="w-full text-sm">
-                        <thead class="bg-slate-50 text-xs font-bold text-slate-500 uppercase border-b border-slate-100">
-                            <tr>
-                                <th class="px-4 py-3 text-left">Nama Produk</th>
-                                <th class="px-4 py-3 text-center w-20">Qty</th>
-                                <th class="px-4 py-3 text-right w-32">Harga</th>
-                                <th class="px-2 w-10"></th>
-                            </tr>
-                        </thead>
-                        <tbody id="product-list" class="divide-y divide-slate-50"></tbody>
-                    </table>
-                    <button onclick="addProductRow()" class="w-full py-3 text-xs font-bold text-indigo-600 hover:bg-indigo-50 transition border-t border-slate-100">
-                        + TAMBAH BARIS
+                <div class="-mx-6 md:mx-0 md:bg-white md:border md:border-slate-200 md:rounded-2xl md:overflow-hidden mb-4 transition-all">
+                    <div class="overflow-x-auto">
+                        <table class="w-full text-sm min-w-[320px]">
+                            <thead class="bg-slate-50/50 md:bg-slate-50 text-[10px] md:text-xs font-bold text-slate-500 uppercase border-b border-slate-200">
+                                <tr>
+                                    <th class="pl-6 pr-2 md:px-4 py-3 text-left w-auto">Produk</th>
+                                    <th class="px-1 md:px-4 py-3 text-center w-14 md:w-24">Qty</th>
+                                    <th class="px-1 md:px-4 py-3 text-right w-28 md:w-40">Harga</th>
+                                    <th class="pl-1 pr-6 md:px-4 w-10"></th>
+                                </tr>
+                            </thead>
+                            <tbody id="product-list" class="divide-y divide-slate-100"></tbody>
+                        </table>
+                    </div>
+                    
+                    <button onclick="addProductRow()" class="w-[110%] -ml-4 md:w-full md:ml-0 py-3 text-xs font-bold text-indigo-600 hover:bg-indigo-50 transition border-t border-slate-200 flex items-center justify-center gap-2">
+                        <i class="fa-solid fa-plus"></i> TAMBAH BARIS
                     </button>
                 </div>
             </div>
@@ -319,16 +339,21 @@
             </button>
 
             <div class="flex justify-end">
-                <button onclick="closeVoucherManager()" class="bg-indigo-600 text-white px-8 py-2.5 rounded-xl font-bold text-sm hover:bg-indigo-700 shadow-lg shadow-indigo-200 transition">
+                <button id="btn-save-voucher" onclick="closeVoucherManager()" class="bg-indigo-600 text-white px-8 py-2.5 rounded-xl font-bold text-sm hover:bg-indigo-700 shadow-lg shadow-indigo-200 transition">
                     Selesai & Simpan
                 </button>
             </div>
         </div>
     </div>
 
-    <div id="loading" class="hidden fixed inset-0 z-50 bg-white/90 backdrop-blur-sm flex-col justify-center items-center">
-        <div class="loader mb-4"></div>
-        <p class="text-slate-800 font-bold tracking-widest text-sm animate-pulse">OPTIMASI DISKON...</p>
+    <div id="loading" class="fixed inset-0 z-[100] bg-white flex flex-col justify-center items-center transition-opacity duration-500">
+        <div class="flex items-center gap-3 mb-2 animate-pulse">
+            <div class="bg-indigo-600 text-white w-12 h-12 rounded-xl flex items-center justify-center text-2xl shadow-lg shadow-indigo-200">
+                <i class="fa-solid fa-file-invoice-dollar"></i>
+            </div>
+            <h1 class="font-extrabold text-3xl text-slate-800 tracking-tight">eksten<span class="text-indigo-600">.</span></h1>
+        </div>
+        <p id="loading-text" class="text-slate-400 text-xs font-bold uppercase tracking-[0.3em] mt-4">Memuat Split Bill...</p>
     </div>
 
     <div id="success-modal" class="hidden fixed inset-0 z-[60] flex items-center justify-center px-4">
@@ -384,11 +409,11 @@
             </div>
 
             <div class="bg-white p-4 flex gap-2 border-t border-slate-100 no-print z-10">
-                <button onclick="downloadReceipt()" class="flex-1 bg-indigo-600 text-white py-2 rounded-lg font-bold text-xs hover:bg-indigo-700 flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-download"></i> Unduh Gambar
+                <button id="btn-download" onclick="downloadReceipt()" class="flex-1 bg-indigo-600 text-white py-2 rounded-lg font-bold text-xs hover:bg-indigo-700 flex items-center justify-center gap-2 transition-all">
+                    <i class="fa-solid fa-download"></i> <span class="btn-text">Unduh Gambar</span>
                 </button>
-                <button onclick="window.print()" class="flex-1 bg-slate-800 text-white py-2 rounded-lg font-bold text-xs hover:bg-slate-700 flex items-center justify-center gap-2">
-                    <i class="fa-solid fa-print"></i> Cetak
+                <button id="btn-print" onclick="printReceipt()" class="flex-1 bg-slate-800 text-white py-2 rounded-lg font-bold text-xs hover:bg-slate-700 flex items-center justify-center gap-2 transition-all">
+                    <i class="fa-solid fa-print"></i> <span class="btn-text">Cetak</span>
                 </button>
                 <button onclick="document.getElementById('receipt-modal').classList.add('hidden')" class="w-10 bg-slate-100 text-slate-500 rounded-lg hover:bg-red-100 hover:text-red-500">
                     <i class="fa-solid fa-xmark"></i>
@@ -408,9 +433,18 @@
         ];
         let lastResult = null;
 
+        // --- INITIAL LOADING ---
         document.addEventListener('DOMContentLoaded', () => {
+            // Simulasi loading awal
+            setTimeout(() => {
+                const loader = document.getElementById('loading');
+                loader.style.opacity = '0';
+                setTimeout(() => {
+                    loader.classList.add('hidden');
+                }, 500);
+            }, 800);
+
             loadLocal();
-            // Init AutoAnimate for container
             if(document.getElementById('voucher-list')) {
                 autoAnimate(document.getElementById('voucher-list'));
             }
@@ -444,11 +478,25 @@
             const id = 'item_' + Date.now() + Math.random().toString(36).substr(2,5);
             const row = document.createElement('tr');
             row.dataset.id = id;
+            
             row.innerHTML = `
-                <td class="px-4 py-2"><input type="text" value="${n}" class="input-clean w-full rounded-lg px-3 py-2 text-sm font-medium" placeholder="Nama..." oninput="syncGlobalItems()"></td>
-                <td class="px-4 py-2"><input type="number" value="${q}" class="input-clean w-full rounded-lg px-2 py-2 text-sm text-center font-bold font-numbers" min="1" oninput="syncGlobalItems()"></td>
-                <td class="px-4 py-2"><div class="relative"><span class="absolute left-3 top-2 text-slate-400 text-xs font-numbers">Rp</span><input type="text" value="${p}" class="input-clean w-full rounded-lg pl-8 pr-3 py-2 text-sm text-right font-bold font-numbers" placeholder="0" onkeyup="formatRupiah(this); syncGlobalItems()"></div></td>
-                <td class="px-2 text-center"><button onclick="this.closest('tr').remove(); syncGlobalItems()" class="text-slate-300 hover:text-red-500 transition"><i class="fa-solid fa-trash-can"></i></button></td>
+                <td class="pl-6 pr-1 md:px-4 py-2 md:py-3 align-top">
+                    <input type="text" value="${n}" class="input-clean w-full rounded-lg px-2 md:px-3 py-2 text-xs md:text-sm font-semibold text-slate-700 placeholder-slate-300 transition" placeholder="Item..." oninput="syncGlobalItems()">
+                </td>
+                <td class="px-1 md:px-4 py-2 md:py-3 align-top">
+                    <input type="number" value="${q}" class="input-clean w-full rounded-lg px-1 py-2 text-xs md:text-sm text-center font-bold font-numbers text-slate-600" min="1" oninput="syncGlobalItems()">
+                </td>
+                <td class="px-1 md:px-4 py-2 md:py-3 align-top">
+                    <div class="relative">
+                        <span class="absolute left-2 md:left-3 top-2 text-slate-400 text-[10px] md:text-xs font-bold font-numbers">Rp</span>
+                        <input type="text" value="${p}" class="input-clean w-full rounded-lg pl-7 md:pl-9 pr-2 md:pr-3 py-2 text-xs md:text-sm text-right font-bold font-numbers text-slate-700" placeholder="0" onkeyup="formatRupiah(this); syncGlobalItems()">
+                    </div>
+                </td>
+                <td class="pl-1 pr-6 md:px-2 py-2 md:py-3 align-top text-center flex items-center justify-center h-full pt-3 md:pt-2">
+                    <button onclick="this.closest('tr').remove(); syncGlobalItems()" class="text-slate-300 hover:text-red-500 transition w-8 h-8 flex items-center justify-center rounded-full hover:bg-red-50">
+                        <i class="fa-solid fa-trash-can text-sm"></i>
+                    </button>
+                </td>
             `;
             tbody.appendChild(row);
             syncGlobalItems();
@@ -470,12 +518,11 @@
                 total += (cleanRupiah(pStr) * qty);
             });
             document.getElementById('temp-subtotal').innerText = fmtMoney(total);
-            updateVoucherRanking(total); // REAL-TIME ANIMATED SORT
+            updateVoucherRanking(total);
             renderMembersUI();
             saveLocal();
         }
 
-        // --- VOUCHER LOGIC (ANIMATED REALTIME SORT) ---
         function updateVoucherRanking(currentTotal) {
             let scoredVouchers = [];
             vouchers.forEach((v, idx) => {
@@ -518,7 +565,6 @@
                 const isBest = (idx === bestIndex);
                 const isValid = rankMap.hasOwnProperty(idx);
                 
-                // Urutan ditentukan oleh properti CSS 'order' agar AutoAnimate bekerja
                 let orderStyle = isValid ? `order: ${-100 + rankMap[idx]};` : `order: 10;`;
                 let classList = `voucher-card bg-white p-3 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between gap-2 relative`;
                 if(isValid) classList += ' valid-voucher';
@@ -545,7 +591,7 @@
                     list.appendChild(el);
                 } else {
                     el.className = classList;
-                    el.style = orderStyle; // Memindah posisi order memicu animasi swap
+                    el.style = orderStyle; 
                     if(el.innerHTML !== innerHTML) el.innerHTML = innerHTML;
                 }
             });
@@ -556,9 +602,26 @@
             renderVoucherManager();
             document.getElementById('manage-voucher-modal').classList.remove('hidden');
         }
+        
+        // MODIFIED: Close voucher dengan efek loading teks tombol
         function closeVoucherManager() {
-            document.getElementById('manage-voucher-modal').classList.add('hidden');
-            syncGlobalItems(); 
+            const btn = document.getElementById('btn-save-voucher');
+            const originalText = btn.innerText;
+            
+            // Set loading state button
+            btn.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin mr-2"></i> Menyimpan...`;
+            btn.disabled = true;
+            btn.classList.add('opacity-75', 'cursor-not-allowed');
+
+            setTimeout(() => {
+                document.getElementById('manage-voucher-modal').classList.add('hidden');
+                syncGlobalItems(); 
+                
+                // Reset button
+                btn.innerText = originalText;
+                btn.disabled = false;
+                btn.classList.remove('opacity-75', 'cursor-not-allowed');
+            }, 600); // Fake delay
         }
 
         function renderVoucherManager() {
@@ -649,8 +712,13 @@
 
         // --- SUBMIT ---
         async function generateBill() {
-            document.getElementById('loading').classList.remove('hidden');
-            document.getElementById('loading').classList.add('flex');
+            // MODIFIED: Loading full screen teks
+            const loader = document.getElementById('loading');
+            const loaderText = document.getElementById('loading-text');
+            loaderText.innerText = "MENGANALISIS ALGORITMA...";
+            loader.classList.remove('hidden');
+            loader.style.opacity = '1';
+
             try {
                 const res = await fetch('/calculate', {
                     method: 'POST',
@@ -681,8 +749,15 @@
                 
                 fireConfetti();
                 showModal(data.summary.used_vouchers);
+
             } catch(e) { alert("Error: " + e.message); } 
-            finally { document.getElementById('loading').classList.add('hidden'); document.getElementById('loading').classList.remove('flex'); }
+            finally { 
+                // Hide Loader with Fade
+                loader.style.opacity = '0';
+                setTimeout(() => {
+                    loader.classList.add('hidden');
+                }, 500);
+            }
         }
 
         function renderResults(data) {
@@ -739,14 +814,53 @@
             document.getElementById('receipt-modal').classList.remove('hidden');
         }
 
+        // MODIFIED: Fungsi Download dengan Loading Button
         function downloadReceipt() {
+            const btn = document.getElementById('btn-download');
+            const btnText = btn.querySelector('.btn-text');
+            const icon = btn.querySelector('i');
+            const originalText = btnText.innerText;
+            const originalIcon = icon.className;
+
+            // State Loading
+            btnText.innerText = "Mengunduh...";
+            icon.className = "fa-solid fa-circle-notch fa-spin";
+            btn.disabled = true;
+            btn.classList.add('opacity-75');
+
             const el = document.getElementById('receipt-wrapper');
             html2canvas(el, { scale: 2, useCORS: true, allowTaint: true, backgroundColor: null }).then(canvas => {
                 const link = document.createElement('a');
                 link.download = 'struk-eksten.jpg';
                 link.href = canvas.toDataURL('image/jpeg', 0.9);
                 link.click();
+                
+                // Reset State
+                setTimeout(() => {
+                    btnText.innerText = originalText;
+                    icon.className = originalIcon;
+                    btn.disabled = false;
+                    btn.classList.remove('opacity-75');
+                }, 500);
             });
+        }
+        
+        // ADDED: Fungsi Print dengan Loading Button
+        function printReceipt() {
+            const btn = document.getElementById('btn-print');
+            const btnText = btn.querySelector('.btn-text');
+            const icon = btn.querySelector('i');
+            const originalText = btnText.innerText;
+            const originalIcon = icon.className;
+            
+            btnText.innerText = "Memuat...";
+            icon.className = "fa-solid fa-circle-notch fa-spin";
+            
+            setTimeout(() => {
+                window.print();
+                btnText.innerText = originalText;
+                icon.className = originalIcon;
+            }, 500);
         }
 
         function saveLocal() {
