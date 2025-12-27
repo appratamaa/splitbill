@@ -271,7 +271,7 @@
                     </div>
 
                     <button onclick="addProductRow()"
-                        class="w-[110%] -ml-4 md:w-full md:ml-0 py-3 text-xs font-bold text-indigo-600 hover:bg-indigo-50 transition border-t border-slate-200 flex items-center justify-center gap-2">
+                        class="w-full py-3 text-xs font-bold text-indigo-600 hover:bg-indigo-50 transition border-t border-slate-200 flex items-center justify-center gap-2">
                         <i class="fa-solid fa-plus"></i> TAMBAH BARIS
                     </button>
                 </div>
@@ -1136,12 +1136,35 @@
             }
         }
 
+        // PERBAIKAN: Reset tanpa reload halaman agar Voucher/Tax/Service tidak hilang
         function resetData() {
-            if (confirm("Hapus Data Produk & Anggota?")) {
+            if (confirm("Hapus Data Produk & Anggota saja? (Voucher & Pajak tetap tersimpan)")) {
+                // 1. Kosongkan Data Produk & Member
                 globalItems = [];
                 membersData = [];
+
+                // 2. Bersihkan Tampilan HTML
+                document.getElementById('product-list').innerHTML = '';
+                document.getElementById('members-container').innerHTML = '';
+                document.getElementById('temp-subtotal').innerText = 'Rp 0';
+
+                // 3. Sembunyikan Area Hasil
+                document.getElementById('results-area').classList.add('hidden');
+                document.getElementById('empty-state').classList.remove('hidden');
+
+                // 4. Tambahkan kembali 1 baris kosong default (UX)
+                addProductRow();
+                addMember();
+
+                // 5. Update Ranking Voucher (kembali ke 0)
+                updateVoucherRanking(0);
+
+                // 6. Simpan state baru ke LocalStorage
+                // Karena variabel 'vouchers', dan value input tax/service tidak kita ubah,
+                // maka saat saveLocal dipanggil, data tersebut ikut tersimpan kembali dengan aman.
                 saveLocal();
-                location.reload();
+
+                // CATATAN: location.reload() DIHAPUS agar UX lebih mulus dan data lain tidak hilang.
             }
         }
 
