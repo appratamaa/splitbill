@@ -1,39 +1,31 @@
+<!DOCTYPE html>
+<html lang="id">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Optimasi Diskon Split Bill: Studi Iteratif vs Rekursif - eksten</title>
     <meta name="csrf-token" content="{{ csrf_token() }}">
-
     <link rel="icon" type="image/svg+xml"
-        href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%234F46E5'/%3E%3Ctext x='50%25' y='50%25' dy='.35em' text-anchor='middle' font-family='sans-serif' font-weight='800' font-size='32' fill='white'%3ESP%3C/text%3E%3C/svg%3E">
-
+        href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%234F46E5'/%3E%3Ctext x='50%25' y='50%25' dy='.35em' text-anchor='middle' font-family='sans-serif' font-weight='800' font-size='32' fill='white'%3ESB%3C/text%3E%3C/svg%3E">
     <meta name="description"
         content="Aplikasi optimasi pembagian bill menggunakan Algoritma 0/1 Knapsack. Bandingkan efisiensi pendekatan Iteratif vs Rekursif secara real-time.">
-
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="https://eksten.koyeb.app/">
-    <meta property="og:title" content="Split Bill Optimizer - eksten">
-    <meta property="og:description"
-        content="Hitung diskon maksimal & bagi tagihan otomatis dengan algoritma Knapsack. Studi kasus Tugas Besar AKA.">
-    <meta property="og:image"
-        content="https://placehold.co/1200x630/4f46e5/ffffff?text=Split+Bill+Optimizer&font=poppins">
-    <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://eksten.koyeb.app/">
-    <meta property="twitter:title" content="Split Bill Optimizer - eksten">
-    <meta property="twitter:description"
-        content="Analisis kompleksitas algoritma Knapsack (Iteratif vs Rekursif) pada kasus pembagian bill.">
-    <meta property="twitter:image"
-        content="https://placehold.co/1200x630/4f46e5/ffffff?text=Split+Bill+Optimizer&font=poppins">
-
+    
     <script src="https://cdn.tailwindcss.com"></script>
+    
     <link
         href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=JetBrains+Mono:wght@400;700&display=swap"
         rel="stylesheet">
+    
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
     <script src="https://html2canvas.hertzen.com/dist/html2canvas.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/auto-animate/0.8.1/index.min.js"></script>
+    
+    <script type="module">
+        import autoAnimate from 'https://cdn.jsdelivr.net/npm/@formkit/auto-animate/index.min.js';
+        window.autoAnimate = autoAnimate;
+    </script>
 
     <style>
         body {
@@ -112,7 +104,7 @@
             cursor: not-allowed;
         }
 
-        /* GANTI CSS LOADER LAMA KE TEKS ANIMASI */
+        /* TEXT ANIMATION */
         .loading-text span {
             display: inline-block;
             animation: bounce 1.4s infinite ease-in-out both;
@@ -212,7 +204,6 @@
 </head>
 
 <body class="min-h-screen pb-12 bg-[url('https://grainy-gradients.vercel.app/noise.svg')]">
-
     <nav class="fixed top-0 w-full z-40 bg-white/90 backdrop-blur-md border-b border-slate-200">
         <div class="max-w-7xl mx-auto px-6 h-20 flex items-center justify-between">
             <div class="flex items-center gap-3">
@@ -236,10 +227,9 @@
         </div>
     </nav>
 
-    <main class="pt-28 px-4 sm:px-6 max-w-7xl mx-auto grid grid-cols-1 lg:grid-cols-12 gap-8">
-
-        <div class="lg:col-span-7 space-y-6">
-
+    <main class="pt-28 px-4 sm:px-6 max-w-6xl mx-auto flex flex-col gap-8">
+        
+        <div class="w-full space-y-6">
             <div class="glass-panel rounded-3xl p-6 md:p-8">
                 <div class="flex justify-between items-center mb-6">
                     <h2 class="text-lg font-bold text-slate-800 flex items-center gap-2">
@@ -252,7 +242,6 @@
                         <p class="text-2xl font-bold text-indigo-600 font-numbers" id="temp-subtotal">Rp 0</p>
                     </div>
                 </div>
-
                 <div
                     class="-mx-6 md:mx-0 md:bg-white md:border md:border-slate-200 md:rounded-2xl md:overflow-hidden mb-4 transition-all">
                     <div class="overflow-x-auto">
@@ -269,7 +258,6 @@
                             <tbody id="product-list" class="divide-y divide-slate-100"></tbody>
                         </table>
                     </div>
-
                     <button onclick="addProductRow()"
                         class="w-full py-3 text-xs font-bold text-indigo-600 hover:bg-indigo-50 transition border-t border-slate-200 flex items-center justify-center gap-2">
                         <i class="fa-solid fa-plus"></i> TAMBAH BARIS
@@ -284,9 +272,7 @@
                     Anggota
                 </h2>
                 <p class="text-xs text-slate-400 mb-6 ml-10">Input anggota dan pilih item yang mereka pesan.</p>
-
-                <div id="members-container" class="grid grid-cols-1 gap-4 mb-4"></div>
-
+                <div id="members-container" class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4"></div>
                 <button onclick="addMember()"
                     class="w-full py-3 border-2 border-dashed border-slate-300 rounded-xl text-slate-400 font-bold hover:text-indigo-600 hover:border-indigo-400 transition">
                     + Tambah Anggota
@@ -299,7 +285,6 @@
                         class="flex items-center justify-center w-7 h-7 rounded-full bg-slate-800 text-white text-xs">3</span>
                     Voucher & Pajak
                 </h2>
-
                 <div class="grid grid-cols-2 gap-6 mb-8">
                     <div>
                         <label class="block text-xs font-bold text-slate-500 uppercase mb-2">Pajak (%)</label>
@@ -330,27 +315,23 @@
             <button onclick="generateBill()"
                 class="w-full bg-slate-900 hover:bg-indigo-600 text-white font-bold text-lg py-5 rounded-2xl shadow-xl transition-all transform active:scale-[0.98] flex justify-center items-center gap-3 group">
                 <span>Jalankan Algoritma</span>
-                <i class="fa-solid fa-bolt group-hover:animate-pulse"></i>
+                <i class="fa-solid fa-calculator group-hover:animate-pulse"></i>
             </button>
         </div>
 
-        <div class="lg:col-span-5 space-y-6">
-
+        <div class="w-full space-y-6">
             <div id="results-area" class="hidden space-y-6 fade-in">
-
                 <div class="bg-white rounded-3xl overflow-hidden shadow-2xl border border-slate-100">
                     <div class="bg-gradient-to-br from-slate-800 to-slate-900 p-8 text-white relative">
-                        <div class="absolute right-0 top-0 p-6 opacity-10 text-8xl"><i
-                                class="fa-solid fa-receipt"></i></div>
+                        <div class="absolute right-0 top-0 p-6 opacity-10 text-8xl"><i class="fa-solid fa-receipt"></i>
+                        </div>
                         <p class="text-xs font-bold text-slate-400 uppercase tracking-widest mb-1">Total Tagihan Final
                         </p>
                         <h2 class="text-5xl font-bold font-numbers mb-2 tracking-tight" id="res-grand-total">Rp 0</h2>
-
                         <div class="mb-4">
                             <p class="text-[10px] text-slate-400">Total Awal (Sub + Tax + Svc)</p>
                             <p class="text-sm font-bold font-numbers" id="res-gross-total">Rp 0</p>
                         </div>
-
                         <div class="border-t border-white/10 pt-4 flex justify-between items-center">
                             <div>
                                 <p class="text-[10px] text-slate-400 uppercase">Voucher Dipilih</p>
@@ -365,7 +346,6 @@
                             </div>
                         </div>
                     </div>
-
                     <div class="p-6 bg-white">
                         <div class="flex justify-between items-center mb-4">
                             <h3 class="text-xs font-bold text-slate-400 uppercase">Detail Pembagian</h3>
@@ -379,76 +359,223 @@
                 </div>
 
                 <div class="glass-panel rounded-3xl p-6">
-                    <h3 class="font-bold text-lg text-slate-800 mb-4 flex items-center gap-2">
-                        <i class="fa-solid fa-layer-group text-indigo-600"></i> Detail Algoritma 0/1 Knapsack
+                    <h3 class="font-bold text-lg text-slate-800 mb-6 flex items-center gap-2">
+                        <i class="fa-solid fa-microchip text-indigo-600"></i> Analisis Algoritma 0/1 Knapsack
                     </h3>
-                    <div class="grid grid-cols-3 gap-3 mb-6">
-                        <div class="bg-white p-3 rounded-xl border border-slate-200 text-center">
-                            <p class="text-[10px] text-slate-500 font-bold uppercase mb-1">Big O (Worst)</p>
-                            <p class="font-numbers font-bold text-sm text-slate-800">O(N·W)</p>
+
+                    <div class="bg-slate-900 text-white p-5 rounded-2xl shadow-lg mb-6 relative overflow-hidden">
+                        <div class="absolute -right-4 -top-4 text-slate-800 opacity-20 text-9xl font-bold italic">O
                         </div>
-                        <div class="bg-white p-3 rounded-xl border border-slate-200 text-center">
-                            <p class="text-[10px] text-slate-500 font-bold uppercase mb-1">Big Theta (Avg)</p>
-                            <p class="font-numbers font-bold text-sm text-slate-800">Θ(N·W)</p>
-                        </div>
-                        <div class="bg-white p-3 rounded-xl border border-slate-200 text-center">
-                            <p class="text-[10px] text-slate-500 font-bold uppercase mb-1">Big Omega (Best)</p>
-                            <p class="font-numbers font-bold text-sm text-slate-800">Ω(N·W)</p>
+                        <div class="relative z-10">
+                            <h4 class="text-xs font-bold text-indigo-400 uppercase mb-2">Kompleksitas Waktu (Time
+                                Complexity)</h4>
+                            <div class="flex items-end gap-3 mb-2">
+                                <span class="text-4xl font-extrabold font-numbers tracking-tight"
+                                    id="big-o-display">O(n²)</span>
+                            </div>
+                            <div
+                                class="text-[10px] text-slate-400 font-mono bg-white/10 p-2 rounded border border-white/10">
+                                <p class="mb-1"><strong class="text-white">Estimasi Beban:</strong></p>
+                                <p id="complexity-details">Loading parameters...</p>
+                            </div>
                         </div>
                     </div>
 
-                    <div
-                        class="space-y-4 text-xs text-slate-600 bg-slate-50 p-4 rounded-xl border border-slate-200 mb-6 leading-relaxed">
-                        <div>
-                            <p class="font-bold text-indigo-600 uppercase mb-1">1. Definisi Masalah</p>
-                            <ul class="list-disc pl-4 space-y-1">
-                                <li><strong>Capacity (W):</strong> Total belanja pengguna (Subtotal).</li>
-                                <li><strong>Items (N):</strong> Daftar voucher diskon.</li>
-                                <li><strong>Weight (wt):</strong> Syarat minimum belanja voucher.</li>
-                                <li><strong>Value (val):</strong> Nominal potongan harga.</li>
-                            </ul>
+                    <div class="grid grid-cols-2 gap-4 mb-6">
+                        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+                            <p class="text-[10px] text-slate-500 font-bold uppercase mb-1">Big Theta (Average Case)</p>
+                            <p class="font-numbers font-bold text-sm text-slate-800" id="big-theta-display">Θ(n²)</p>
+                            <p class="text-[9px] text-slate-400 mt-1">Rata-rata harus mengisi seluruh tabel DP.</p>
                         </div>
-                        <div>
-                            <p class="font-bold text-indigo-600 uppercase mb-1">2. Relasi Rekurens (Dynamic
-                                Programming)</p>
-                            <p class="mb-1">Kami menggunakan pendekatan <em>Bottom-Up</em> untuk mengisi tabel
-                                $K[i][w]$:</p>
+                        <div class="bg-white p-4 rounded-xl border border-slate-200 shadow-sm">
+                            <p class="text-[10px] text-slate-500 font-bold uppercase mb-1">Big Omega (Best Case)</p>
+                            <p class="font-numbers font-bold text-sm text-slate-800" id="big-omega-display">Ω(n)</p>
+                            <p class="text-[9px] text-slate-400 mt-1">Hanya membaca input pada kasus trivial.</p>
+                        </div>
+                    </div>
+
+                    <div class="mb-6 bg-indigo-50/50 p-5 rounded-xl border border-indigo-100">
+                        <h4 class="font-bold text-xs text-indigo-700 uppercase mb-3 flex items-center gap-2">
+                            <i class="fa-solid fa-book-open"></i> Definisi Masalah & Variabel
+                        </h4>
+                        <ul class="space-y-2 text-xs text-slate-600">
+                            <li class="flex gap-2">
+                                <span class="font-bold font-mono text-indigo-600 w-8">N</span>
+                                <span>: <strong>Jumlah Item (Voucher).</strong> Banyaknya opsi diskon yang tersedia
+                                    untuk dipilih.</span>
+                            </li>
+                            <li class="flex gap-2">
+                                <span class="font-bold font-mono text-indigo-600 w-8">W</span>
+                                <span>: <strong>Capacity (Total Belanja).</strong> Batas maksimum "berat" yang bisa
+                                    ditampung (dalam kasus ini adalah Total Tagihan).</span>
+                            </li>
+                            <li class="flex gap-2">
+                                <span class="font-bold font-mono text-indigo-600 w-8">wt[]</span>
+                                <span>: <strong>Weight (Syarat Min. Belanja).</strong> Array berisi syarat minimal
+                                    belanja tiap voucher.</span>
+                            </li>
+                            <li class="flex gap-2">
+                                <span class="font-bold font-mono text-indigo-600 w-8">val[]</span>
+                                <span>: <strong>Value (Nominal Diskon).</strong> Array berisi keuntungan/potongan harga
+                                    yang didapat.</span>
+                            </li>
+                            <li class="flex gap-2">
+                                <span class="font-bold font-mono text-indigo-600 w-8">K[][]</span>
+                                <span>: <strong>Tabel DP.</strong> Matriks 2 dimensi untuk menyimpan solusi optimal
+                                    sub-masalah.</span>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+                        <div class="bg-white p-4 rounded-xl border border-slate-200">
+                            <div class="flex items-center gap-2 mb-2 border-b border-slate-100 pb-2">
+                                <span class="w-2 h-2 rounded-full bg-indigo-600"></span>
+                                <h4 class="font-bold text-xs text-slate-800 uppercase">Pendekatan Iteratif (Tabulasi)
+                                </h4>
+                            </div>
+                            <p class="text-[10px] text-slate-500 leading-relaxed mb-2">
+                                Menggunakan teknik <strong>Bottom-Up</strong>. Kita membuat tabel raksasa berukuran
+                                $(N+1) \times (W+1)$ dan mengisinya satu per satu dari pojok kiri atas (0,0) hingga
+                                kanan bawah.
+                            </p>
                             <div
-                                class="bg-white p-2 rounded border border-slate-200 font-numbers text-[10px] overflow-x-auto">
-                                if (wt[i] <= w): <br>
-                                    &nbsp;&nbsp; K[i][w] = max(val[i] + K[i-1][w-wt[i]], K[i-1][w]) <br>
-                                    else: <br>
-                                    &nbsp;&nbsp; K[i][w] = K[i-1][w]
+                                class="bg-slate-50 p-2 rounded text-[9px] font-mono text-slate-600 border border-slate-200">
+                                <strong>Logika:</strong> Menggunakan Loops (For).<br>
+                                "Jika saya punya kapasitas w, apakah ambil voucher i lebih untung?"
                             </div>
                         </div>
-                        <div>
-                            <p class="font-bold text-indigo-600 uppercase mb-1">3. Analisis Efisiensi</p>
-                            <p>
-                                Algoritma berjalan dalam waktu <strong>Pseudo-Polynomial</strong>. Meskipun efisien
-                                untuk N kecil, kompleksitas bergantung linear pada kapasitas W (Total Belanja). Kami
-                                membandingkan pendekatan <strong>Iteratif</strong> (Tabulasi) dan
-                                <strong>Rekursif</strong> (Memoization) di bawah ini.
+                        <div class="bg-white p-4 rounded-xl border border-slate-200">
+                            <div class="flex items-center gap-2 mb-2 border-b border-slate-100 pb-2">
+                                <span class="w-2 h-2 rounded-full bg-pink-500"></span>
+                                <h4 class="font-bold text-xs text-slate-800 uppercase">Pendekatan Rekursif
+                                    (Memoization)</h4>
+                            </div>
+                            <p class="text-[10px] text-slate-500 leading-relaxed mb-2">
+                                Menggunakan teknik <strong>Top-Down</strong>. Kita mulai dari masalah besar, lalu
+                                memecahnya. Agar tidak menghitung hal yang sama berulang kali, kita simpan hasil di
+                                <em>Memo Table</em>.
+                            </p>
+                            <div
+                                class="bg-slate-50 p-2 rounded text-[9px] font-mono text-slate-600 border border-slate-200">
+                                <strong>Logika:</strong> Pohon Keputusan (Function Calls).<br>
+                                "Coba opsi A, coba opsi B, lalu bandingkan hasilnya."
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="mb-6">
+                        <h4 class="font-bold text-xs text-slate-400 uppercase mb-2">Relasi Rekurens (Rumus Utama)</h4>
+                        <div class="bg-slate-800 text-white p-4 rounded-xl shadow-md font-mono text-xs overflow-x-auto">
+                            <p class="text-slate-400 mb-1">// Base Case</p>
+                            <p class="mb-2">if (i == 0 || w == 0) return 0;</p>
+                            <p class="text-slate-400 mb-1">// Recursive Step</p>
+                            <p class="mb-1">if (wt[i] <= w) {</p>
+                                    <p class="pl-4 text-emerald-400">K[i][w] = max( val[i] + K[i-1][w-wt[i]], K[i-1][w]
+                                        );</p>
+                                    <p class="mb-1">} else {</p>
+                                    <p class="pl-4 text-pink-400">K[i][w] = K[i-1][w];</p>
+                                    <p>}</p>
+                        </div>
+                        <p class="text-[10px] text-slate-500 mt-2 italic">
+                            *Rumus ini menentukan nilai maksimal pada setiap sel tabel berdasarkan keputusan ambil/tidak
+                            ambil item.
+                        </p>
+                    </div>
+
+                    <div class="mb-8">
+                        <h4 class="font-bold text-xs text-slate-800 uppercase mb-3 border-b border-slate-200 pb-2">
+                            Implementasi Operasi Dasar
+                        </h4>
+                        <pre
+                            class="font-mono text-[10px] text-indigo-900 bg-white p-3 rounded border border-indigo-100 overflow-x-auto whitespace-pre-wrap">
+// Loop Utama (Iteratif) yang menentukan Kompleksitas
+for ($i = 0; $i <= $n; $i++) {        // Loop sebanyak N kali
+    for ($w = 0; $w <= $W; $w++) {    // Loop sebanyak W kali
+        
+        // OPERASI DASAR (Basic Operation): Perbandingan Max
+        if ($wt[$i-1] <= $w) 
+            $K[$i][$w] = max($val[$i-1] + $K[$i-1][$w - $wt[$i-1]], $K[$i-1][$w]);
+        else 
+            $K[$i][$w] = $K[$i-1][$w];
+    }
+}</pre>
+                    </div>
+
+                    <div class="mb-6">
+                        <div class="flex justify-between items-end mb-4">
+                            <h4 class="font-bold text-xs text-slate-800 uppercase">Grafik Benchmark Runtime</h4>
+                            <div class="flex bg-slate-100 p-1 rounded-lg">
+                                <button onclick="updateChartMode('all')" id="btn-chart-all"
+                                    class="px-3 py-1.5 text-[10px] font-bold rounded-md bg-white text-indigo-600 shadow-sm transition-all">Gabungan</button>
+                                <button onclick="updateChartMode('iter')" id="btn-chart-iter"
+                                    class="px-3 py-1.5 text-[10px] font-bold rounded-md text-slate-500 hover:text-indigo-600 transition-all">Iteratif</button>
+                                <button onclick="updateChartMode('rec')" id="btn-chart-rec"
+                                    class="px-3 py-1.5 text-[10px] font-bold rounded-md text-slate-500 hover:text-pink-600 transition-all">Rekursif</button>
+                            </div>
+                        </div>
+                        <div class="h-60 w-full bg-white p-4 rounded-2xl border border-slate-200 shadow-sm relative">
+                            <canvas id="complexityChart"></canvas>
+                        </div>
+                        <div id="chart-explanation"
+                            class="mt-3 text-[10px] text-slate-500 bg-indigo-50/50 p-3 rounded-lg border border-indigo-100 italic">
+                            Menampilkan perbandingan head-to-head.
+                        </div>
+                    </div>
+
+                    <div>
+                        <h4 class="font-bold text-xs text-slate-800 uppercase mb-3 border-b border-slate-200 pb-2">
+                            Analisis Kecepatan Eksekusi (Runtime)
+                        </h4>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div
+                                class="bg-white p-4 rounded-xl border border-l-4 border-slate-200 border-l-indigo-500 shadow-sm">
+                                <div class="flex justify-between items-start mb-2">
+                                    <div>
+                                        <p class="text-xs font-bold text-indigo-600">Iteratif Time</p>
+                                        <p class="text-[9px] text-slate-400">Rumus: $T_{end} - T_{start}$</p>
+                                    </div>
+                                    <span class="text-xl font-bold font-numbers text-slate-800"
+                                        id="time-iter-display">0 ms</span>
+                                </div>
+                                <p class="text-[9px] text-slate-500">
+                                    Waktu yang dibutuhkan CPU untuk mengisi tabel matriks secara urut (Looping). Stabil
+                                    namun memakan memori.
+                                </p>
+                            </div>
+                            <div
+                                class="bg-white p-4 rounded-xl border border-l-4 border-slate-200 border-l-pink-500 shadow-sm">
+                                <div class="flex justify-between items-start mb-2">
+                                    <div>
+                                        <p class="text-xs font-bold text-pink-600">Rekursif Time</p>
+                                        <p class="text-[9px] text-slate-400">Rumus: $T_{end} - T_{start}$</p>
+                                    </div>
+                                    <span class="text-xl font-bold font-numbers text-slate-800"
+                                        id="time-rec-display">0 ms</span>
+                                </div>
+                                <p class="text-[9px] text-slate-500">
+                                    Waktu eksekusi dengan pemanggilan fungsi. Menggunakan Memoization untuk menghindari
+                                    perhitungan ulang.
+                                </p>
+                            </div>
+                        </div>
+                        <div class="mt-4 pt-4 border-t border-slate-100">
+                            <h4 class="font-bold text-xs text-slate-400 uppercase mb-2">Kesimpulan Efisiensi</h4>
+                            <p class="text-xs text-slate-600 leading-relaxed text-justify">
+                                Algoritma ini tergolong <strong>Pseudo-Polynomial</strong>.
+                                <br><br>
+                                Dalam perbandingan di atas: <span id="winner-text"
+                                    class="font-bold text-indigo-600">...</span>. Pendekatan Iteratif umumnya lebih aman
+                                dari <em>Stack Overflow</em> untuk data besar, sedangkan Rekursif lebih mudah
+                                diimplementasikan secara logika.
                             </p>
                         </div>
                     </div>
-
-                    <h4 class="font-bold text-xs text-slate-400 uppercase mb-3">Grafik Benchmark Runtime (Line Chart)
-                    </h4>
-                    <div class="h-48 w-full bg-white p-2 rounded-xl border border-slate-200 mb-2">
-                        <canvas id="complexityChart"></canvas>
-                    </div>
-                    <div class="flex justify-between text-xs font-bold text-slate-500 px-1">
-                        <span class="text-indigo-600">Iteratif: <span id="time-iter"
-                                class="font-numbers">0ms</span></span>
-                        <span class="text-pink-600">Rekursif: <span id="time-rec"
-                                class="font-numbers">0ms</span></span>
-                    </div>
                 </div>
-
             </div>
 
             <div id="empty-state"
-                class="h-full min-h-[500px] glass-panel rounded-3xl flex flex-col items-center justify-center text-center p-10 border-2 border-dashed border-slate-300">
+                class="h-full min-h-[400px] glass-panel rounded-3xl flex flex-col items-center justify-center text-center p-10 border-2 border-dashed border-slate-300">
                 <i class="fa-solid fa-calculator text-4xl text-indigo-200 mb-4"></i>
                 <h3 class="font-bold text-lg text-slate-700">Siap Menghitung</h3>
                 <p class="text-xs text-slate-400 mt-1 max-w-xs">Masukkan produk, anggota, dan voucher untuk memulai
@@ -462,7 +589,6 @@
         <div class="bg-white w-full max-w-2xl rounded-3xl p-6 shadow-2xl relative">
             <h3 class="text-lg font-bold text-slate-800 mb-4 flex items-center gap-2"><i
                     class="fa-solid fa-ticket text-indigo-600"></i> Kelola Daftar Voucher</h3>
-
             <div class="grid grid-cols-12 gap-2 text-[10px] font-bold text-slate-400 uppercase mb-2 px-2">
                 <div class="col-span-3">Kode</div>
                 <div class="col-span-3 text-right">Diskon (Rp/%)</div>
@@ -470,14 +596,11 @@
                 <div class="col-span-2 text-center">Qty</div>
                 <div class="col-span-1"></div>
             </div>
-
             <div id="voucher-input-list" class="space-y-2 mb-4 max-h-[50vh] overflow-y-auto pr-1"></div>
-
             <button onclick="addVoucherRowModal()"
                 class="w-full py-3 border-2 border-dashed border-slate-300 rounded-xl text-slate-400 font-bold hover:text-indigo-600 hover:border-indigo-400 transition mb-4 text-sm">
                 + Tambah Voucher Baru
             </button>
-
             <div class="flex justify-end">
                 <button id="btn-save-voucher" onclick="closeVoucherManager()"
                     class="bg-indigo-600 text-white px-8 py-2.5 rounded-xl font-bold text-sm hover:bg-indigo-700 shadow-lg shadow-indigo-200 transition">
@@ -531,10 +654,8 @@
                         <p class="text-[10px] text-slate-500 uppercase tracking-widest">Official Receipt</p>
                         <p class="text-[10px] text-slate-400 mt-1" id="rec-date"></p>
                     </div>
-
-                    <div id="rec-items"
-                        class="space-y-2 mb-4 pb-4 border-b-2 border-dashed border-slate-400/50 text-xs"></div>
-
+                    <div id="rec-items" class="space-y-2 mb-4 pb-4 border-b-2 border-dashed border-slate-400/50 text-xs">
+                    </div>
                     <div class="space-y-1 text-right mb-4 pb-4 border-b-2 border-dashed border-slate-400/50 text-xs">
                         <div class="flex justify-between"><span>Subtotal</span><span id="rec-sub">0</span></div>
                         <div class="flex justify-between"><span>Tax</span><span id="rec-tax-only">0</span></div>
@@ -544,19 +665,16 @@
                                     class="text-[9px] font-normal text-slate-500"></span></span><span
                                 id="rec-disc">0</span></div>
                     </div>
-
                     <div class="flex justify-between items-center text-xl font-bold mb-6 text-slate-900">
                         <span>TOTAL</span>
                         <span id="rec-total">0</span>
                     </div>
-
                     <div class="text-center mb-3">
                         <div
                             class="inline-block bg-slate-900 text-white text-[9px] font-bold px-2 py-1 rounded uppercase tracking-wider">
                             Split Bill Details</div>
                     </div>
                     <div id="rec-splits" class="space-y-2 text-[10px]"></div>
-
                     <div class="mt-8 text-center">
                         <p class="text-[9px] text-slate-400">Generated by eksten web app</p>
                         <p class="text-[9px] text-slate-400">0/1 Knapsack Algorithm</p>
@@ -564,7 +682,6 @@
                     </div>
                 </div>
             </div>
-
             <div class="bg-white p-4 flex gap-2 border-t border-slate-100 no-print z-10">
                 <button id="btn-download" onclick="downloadReceipt()"
                     class="flex-1 bg-indigo-600 text-white py-2 rounded-lg font-bold text-xs hover:bg-indigo-700 flex items-center justify-center gap-2 transition-all">
@@ -581,6 +698,7 @@
             </div>
         </div>
     </div>
+
     <canvas id="confetti-canvas" class="fixed inset-0 w-full h-full pointer-events-none z-[9999]"></canvas>
 
     <script>
@@ -588,26 +706,26 @@
         let globalItems = [];
         let membersData = [];
         let vouchers = [{
-                code: "HEMAT10",
-                discount: "10.000",
-                min_spend: "50.000",
-                qty: 5
-            },
-            {
-                code: "DISKON50",
-                discount: "50.000",
-                min_spend: "200.000",
-                qty: 2
-            },
-            {
-                code: "NAT4L",
-                discount: "15.000",
-                min_spend: "5.000",
-                qty: 10
-            }
+            code: "HEMAT10",
+            discount: "10.000",
+            min_spend: "50.000",
+            qty: 5
+        },
+        {
+            code: "DISKON50",
+            discount: "50.000",
+            min_spend: "200.000",
+            qty: 2
+        },
+        {
+            code: "NAT4L",
+            discount: "15.000",
+            min_spend: "5.000",
+            qty: 10
+        }
         ];
         let lastResult = null;
-
+        
         // --- INITIAL LOADING ---
         document.addEventListener('DOMContentLoaded', () => {
             // PERBAIKAN: Loading Awal (Splash Screen)
@@ -618,20 +736,21 @@
                     loader.classList.add('hidden'); // Sembunyikan setelah fade selesai
                 }, 500); // Sesuai durasi transition CSS (500ms)
             }, 1500); // Tahan loading selama 1.5 detik agar terlihat user
-
+            
             loadLocal();
-            if (document.getElementById('voucher-list')) {
-                autoAnimate(document.getElementById('voucher-list'));
+            
+            // FIX: Check if autoAnimate is loaded globally from the module script
+            if (document.getElementById('voucher-list') && window.autoAnimate) {
+                window.autoAnimate(document.getElementById('voucher-list'));
             }
+            
             if (globalItems.length === 0) addProductRow();
             if (membersData.length === 0) addMember();
             syncGlobalItems();
         });
 
         // --- UTILS (UPDATE TOTAL) ---
-
         // 1. Format Rupiah (Angka 0-9 saja, otomatis ada titik ribuan)
-        // Dipakai untuk: Harga Produk, Service, Min Belanja
         const formatRupiah = (el) => {
             let val = el.value.replace(/[^0-9]/g, ''); // Hapus SEMUA kecuali angka
             if (val) {
@@ -640,27 +759,18 @@
                 el.value = "";
             }
         }
-
         // 2. Format Angka Murni (Angka 0-9 saja, TANPA titik)
-        // Dipakai untuk: Pajak (%), Qty Produk, Qty Voucher
         const formatOnlyNumber = (el) => {
             el.value = el.value.replace(/[^0-9]/g, ''); // Hapus huruf/simbol/titik/koma
         }
-
         // 3. Format Khusus Diskon (Angka 0-9 DAN %)
-        // Dipakai untuk: Diskon Voucher
         const formatDiscountValid = (el) => {
-            // Hanya izinkan angka dan simbol persen
             let val = el.value.replace(/[^0-9%]/g, '');
-
-            // Logika: Jika ada %, biarkan apa adanya. Jika tidak ada %, format sebagai Rupiah
             if (val.includes('%')) {
-                // Cegah persen ganda (misal 10%%)
                 let parts = val.split('%');
                 if (parts.length > 2) val = parts[0] + '%';
                 el.value = val;
             } else {
-                // Format Rupiah (ribuan)
                 if (val) {
                     el.value = parseInt(val).toLocaleString('id-ID').replace(/,/g, '.');
                 } else {
@@ -668,10 +778,9 @@
                 }
             }
         }
-
         // Helper untuk membersihkan format saat kalkulasi
         const cleanRupiah = (str) => (!str) ? 0 : parseFloat(str.toString().replace(/[^0-9]/g, '')) ||
-        0; // Ubah regex agar aman
+            0; // Ubah regex agar aman
         const fmtMoney = (n) => "Rp " + Math.round(n).toLocaleString('id-ID').replace(/,/g, '.');
         const formatNumberDots = (numStr) => {
             if (!numStr) return '0';
@@ -682,13 +791,11 @@
         }
 
         // --- PRODUCTS ---
-        // GANTI FUNGSI INI SEPENUHNYA
         function addProductRow(n = '', q = 1, p = '') {
             const tbody = document.getElementById('product-list');
             const id = 'item_' + Date.now() + Math.random().toString(36).substr(2, 5);
             const row = document.createElement('tr');
             row.dataset.id = id;
-
             row.innerHTML = `
         <td class="pl-6 pr-1 md:px-4 py-2 md:py-3 align-top">
             <input type="text" value="${n}" class="input-clean w-full rounded-lg px-2 md:px-3 py-2 text-xs md:text-sm font-semibold text-slate-700 placeholder-slate-300 transition" placeholder="Item..." oninput="syncGlobalItems()">
@@ -699,7 +806,7 @@
         <td class="px-1 md:px-4 py-2 md:py-3 align-top">
             <div class="relative">
                 <span class="absolute left-2 md:left-3 top-2 text-slate-400 text-[10px] md:text-xs font-bold font-numbers">Rp</span>
-                
+                 
                 <input type="text" 
                        inputmode="numeric" 
                        value="${p}" 
@@ -744,7 +851,6 @@
             vouchers.forEach((v, idx) => {
                 const qty = parseInt(v.qty) || 0;
                 if (!v.code || !v.discount || !v.min_spend || qty <= 0) return;
-
                 const min = cleanRupiah(v.min_spend);
                 let val = 0;
                 if (v.discount.includes('%')) {
@@ -752,7 +858,6 @@
                 } else {
                     val = cleanRupiah(v.discount);
                 }
-
                 if (currentTotal >= min && currentTotal > 0) {
                     scoredVouchers.push({
                         index: idx,
@@ -760,7 +865,6 @@
                     });
                 }
             });
-
             scoredVouchers.sort((a, b) => b.val - a.val);
             renderVouchersMain(scoredVouchers);
         }
@@ -772,26 +876,22 @@
                 rankMap[item.index] = rank;
             });
             const bestIndex = (scoredVouchers.length > 0) ? scoredVouchers[0].index : -1;
-
             vouchers.forEach((v, idx) => {
                 const qty = parseInt(v.qty) || 0;
                 const elId = `v-card-${idx}`;
                 let el = document.getElementById(elId);
-
+                // LOGIKA: Jika stok habis (0), sembunyikan dari daftar ini
                 if (qty <= 0) {
                     if (el) el.remove();
-                    return;
+                    return; // Lewati proses render untuk item ini
                 }
-
                 const isBest = (idx === bestIndex);
                 const isValid = rankMap.hasOwnProperty(idx);
-
                 let orderStyle = isValid ? `order: ${-100 + rankMap[idx]};` : `order: 10;`;
                 let classList =
                     `voucher-card bg-white p-3 rounded-xl border border-slate-200 shadow-sm flex items-center justify-between gap-2 relative`;
                 if (isValid) classList += ' valid-voucher';
                 if (isBest) classList += ' best-pick';
-
                 const innerHTML = `
                     <div class="flex flex-col">
                         <span class="text-xs font-bold text-slate-800 uppercase">${v.code.toUpperCase()}</span>
@@ -803,7 +903,6 @@
                         <div class="text-[9px] text-slate-400 mt-0.5">Stok: ${qty}</div>
                     </div>
                 `;
-
                 if (!el) {
                     el = document.createElement('div');
                     el.id = elId;
@@ -829,16 +928,13 @@
         function closeVoucherManager() {
             const btn = document.getElementById('btn-save-voucher');
             const originalText = btn.innerText;
-
             // Set loading state button
             btn.innerHTML = `<i class="fa-solid fa-circle-notch fa-spin mr-2"></i> Menyimpan...`;
             btn.disabled = true;
             btn.classList.add('opacity-75', 'cursor-not-allowed');
-
             setTimeout(() => {
                 document.getElementById('manage-voucher-modal').classList.add('hidden');
                 syncGlobalItems();
-
                 // Reset button
                 btn.innerText = originalText;
                 btn.disabled = false;
@@ -857,16 +953,15 @@
                 <div class="col-span-3">
                     <input type="text" value="${v.code}" class="w-full text-xs font-bold text-slate-800 uppercase outline-none bg-white border border-slate-200 rounded px-2 py-1 focus:border-indigo-500" placeholder="KODE" oninput="this.value = this.value.toUpperCase(); vouchers[${idx}].code=this.value; saveLocal();">
                 </div>
-                
+                 
                 <div class="col-span-3">
                     <input type="text" 
-                           inputmode="numeric"
                            value="${v.discount}" 
                            class="w-full text-xs font-bold text-emerald-600 text-right outline-none bg-white border border-slate-200 rounded px-2 py-1 focus:border-emerald-500 font-numbers" 
                            placeholder="0"
                            oninput="formatDiscountValid(this); vouchers[${idx}].discount=this.value; saveLocal();">
                 </div>
-                
+                 
                 <div class="col-span-3">
                     <input type="text" 
                            inputmode="numeric"
@@ -875,7 +970,7 @@
                            placeholder="0"
                            oninput="formatRupiah(this); vouchers[${idx}].min_spend=this.value; saveLocal();">
                 </div>
-                
+                 
                 <div class="col-span-2">
                      <input type="text" 
                             inputmode="numeric"
@@ -884,7 +979,7 @@
                             placeholder="1" 
                             oninput="formatOnlyNumber(this); vouchers[${idx}].qty=this.value; saveLocal();">
                 </div>
-                
+                 
                 <div class="col-span-1 flex items-center justify-end">
                      <button onclick="vouchers.splice(${idx},1); renderVoucherManager(); saveLocal();" class="text-red-400 hover:text-red-600"><i class="fa-solid fa-trash"></i></button>
                 </div>
@@ -930,7 +1025,6 @@
                 const list = div.querySelector('.member-list');
                 if (globalItems.length === 0) list.innerHTML =
                     '<span class="text-xs text-slate-400 italic">Belum ada produk.</span>';
-
                 globalItems.forEach(item => {
                     if (!item.name) return;
                     let taken = 0;
@@ -941,7 +1035,6 @@
                     const remain = item.qty - taken - myQty;
                     const canAdd = remain > 0;
                     const canSub = myQty > 0;
-
                     const row = document.createElement('div');
                     row.className =
                         `flex justify-between items-center p-2 rounded-lg text-xs ${myQty > 0 ? 'bg-indigo-50' : ''}`;
@@ -967,31 +1060,25 @@
             saveLocal();
         }
 
-        // --- SUBMIT ---
-        // PERBAIKAN: Validasi Produk Wajib, tapi Anggota Opsional
+        // --- VARIABLE GLOBAL CHART ---
+        let chartDataStore = null;
+        let currentChartMode = 'all';
+
+        // --- GENERATE BILL (LOGIC) ---
         async function generateBill() {
-            // 1. Validasi HANYA Produk
             if (globalItems.length === 0) {
                 alert("Data Produk masih kosong. Silakan masukkan produk terlebih dahulu.");
                 return;
             }
-
-            // 2. Tampilkan Loading
             const loader = document.getElementById('loading');
             const loaderText = document.getElementById('loading-text');
-
             loaderText.innerText = "MENGANALISIS ALGORITMA...";
             loader.classList.remove('hidden');
-
-            // Paksa browser me-render ulang
-            void loader.offsetWidth;
+            void loader.offsetWidth; 
             loader.style.opacity = '1';
 
             try {
-                // --- TAMBAHAN: Jeda buatan selama 2 detik agar loading terlihat ---
-                await new Promise(resolve => setTimeout(resolve, 2000));
-                // ----------------------------------------------------------------
-
+                await new Promise(resolve => setTimeout(resolve, 2000)); // Delay efek
                 const res = await fetch('/calculate', {
                     method: 'POST',
                     headers: {
@@ -1009,12 +1096,15 @@
                 });
 
                 if (!res.ok) throw new Error("Server Error");
+
                 const data = await res.json();
                 lastResult = data;
+                chartDataStore = data.chart;
 
                 renderResults(data);
-                renderChart(data.chart);
+                updateChartMode('all'); // Default chart
 
+                // Kurangi stok voucher jika ada yang terpakai
                 if (data.summary.used_vouchers.length > 0) {
                     const usedCode = data.summary.used_vouchers[0];
                     const vIdx = vouchers.findIndex(v => v.code.toUpperCase() === usedCode);
@@ -1031,7 +1121,6 @@
                 document.getElementById('empty-state').classList.add('hidden');
                 document.getElementById('results-area').classList.remove('hidden');
 
-                // Panggil Confetti setelah loading selesai
                 setTimeout(() => {
                     fireConfetti();
                     showModal(data.summary.used_vouchers);
@@ -1039,8 +1128,8 @@
 
             } catch (e) {
                 alert("Error: " + e.message);
+                console.error(e);
             } finally {
-                // Sembunyikan Loading
                 loader.style.opacity = '0';
                 setTimeout(() => {
                     loader.classList.add('hidden');
@@ -1048,13 +1137,17 @@
             }
         }
 
+        // --- RENDER RESULTS (DIPERBAIKI UNTUK TAMPILKAN NOTASI STANDAR) ---
         function renderResults(data) {
+            // 1. Tagihan Dasar
             document.getElementById('res-grand-total').innerText = fmtMoney(data.summary.grand_total);
             document.getElementById('res-gross-total').innerText = fmtMoney(data.summary.gross_total);
             document.getElementById('res-discount').innerText = "- " + fmtMoney(data.summary.discount);
+
             let usedCode = data.summary.used_vouchers.length > 0 ? data.summary.used_vouchers[0] : "-";
             document.getElementById('res-voucher-used').innerText = usedCode.toUpperCase();
 
+            // 2. Member Split List
             const box = document.getElementById('split-results');
             box.innerHTML = '';
             data.members.forEach(m => {
@@ -1071,8 +1164,71 @@
                     </div>
                 `);
             });
-            document.getElementById('time-iter').innerText = data.algorithm.iterative_time + "ms";
-            document.getElementById('time-rec').innerText = data.algorithm.recursive_time + "ms";
+
+            // 3. TAMPILAN NOTASI BIG O, THETA, OMEGA
+            // PERBAIKAN DI SINI: Menerjemahkan Total Ops (N*W) ke Notasi Standar
+            
+            const n = data.complexity.n;
+            const w = data.complexity.w;
+            const totalOps = data.complexity.total_ops;
+            
+            // Format angka untuk detail
+            const fN = n.toLocaleString('id-ID');
+            const fOps = totalOps.toLocaleString('id-ID');
+
+            // --- LOGIKA TRANSLASI KE NOTASI STANDAR ---
+            // Kita membandingkan 'beban' (totalOps) terhadap jumlah item (n)
+            // untuk menentukan apakah ini terasa seperti n, n log n, n^2, atau 2^n
+            
+            let notationO = "";
+            
+            // Rasio beban per item
+            const loadFactor = totalOps / (n || 1); 
+
+            // Tentukan Big O (Worst Case / Upper Bound) berdasarkan load factor
+            if (loadFactor < 10) {
+                notationO = "n";            // Ringan (Linear)
+            } else if (loadFactor < 50) {
+                notationO = "n \\log n";    // Sedang (Linearithmic)
+            } else if (loadFactor < 500) {
+                notationO = "n^2";          // Berat (Quadratic)
+            } else {
+                notationO = "2^n";          // Sangat Berat (Exponential)
+            }
+
+            // Tentukan Big Theta (Average Case) - Biasanya sama dengan O pada kasus ini
+            let notationTheta = notationO; 
+            
+            // Tentukan Big Omega (Best Case) - Biasanya Linear (membaca input)
+            let notationOmega = "n"; 
+
+            // Update Tampilan HTML
+            document.getElementById('big-o-display').innerText = `O(${notationO})`;
+            document.getElementById('big-theta-display').innerText = `Θ(${notationTheta})`;
+            document.getElementById('big-omega-display').innerText = `Ω(${notationOmega})`;
+            
+            // Update Detail deskripsi dengan angka real
+            document.getElementById('complexity-details').innerHTML = `
+                Dengan <span class="text-indigo-300">N=${fN}</span> item, 
+                total operasi mencapai <strong>~${fOps}</strong> langkah 
+                (setara kelas <strong>O(${notationO})</strong>).
+            `;
+
+            // 4. Kecepatan & Winner Text
+            const iterTime = parseFloat(data.algorithm.iterative_time);
+            const recTime = parseFloat(data.algorithm.recursive_time);
+            
+            document.getElementById('time-iter-display').innerText = data.algorithm.iterative_time + " ms";
+            document.getElementById('time-rec-display').innerText = data.algorithm.recursive_time + " ms";
+
+            const winnerText = document.getElementById('winner-text');
+            if(iterTime < recTime) {
+                winnerText.innerText = "Algoritma Iteratif berjalan lebih cepat pada kasus ini";
+            } else if (recTime < iterTime) {
+                winnerText.innerText = "Algoritma Rekursif berjalan lebih cepat pada kasus ini";
+            } else {
+                winnerText.innerText = "Keduanya memiliki performa yang seimbang";
+            }
         }
 
         function showReceiptModal() {
@@ -1088,11 +1244,14 @@
             document.getElementById('rec-sub').innerText = fmtMoney(lastResult.summary.subtotal);
             document.getElementById('rec-tax-only').innerText = fmtMoney(lastResult.summary.tax);
             document.getElementById('rec-svc-only').innerText = fmtMoney(lastResult.summary.service);
+
             const vCode = (lastResult.summary.used_vouchers && lastResult.summary.used_vouchers.length > 0) ? lastResult
                 .summary.used_vouchers[0] : "";
             document.getElementById('rec-voucher-code').innerText = vCode ? `(${vCode.toUpperCase()})` : "";
             document.getElementById('rec-disc').innerText = "- " + fmtMoney(lastResult.summary.discount);
+
             document.getElementById('rec-total').innerText = fmtMoney(lastResult.summary.grand_total);
+
             const sb = document.getElementById('rec-splits');
             sb.innerHTML = '';
             lastResult.members.forEach(m => {
@@ -1105,6 +1264,7 @@
                     </div>
                 </div>`;
             });
+
             document.getElementById('receipt-modal').classList.remove('hidden');
         }
 
@@ -1154,7 +1314,7 @@
 
             btnText.innerText = "Memuat...";
             icon.className = "fa-solid fa-circle-notch fa-spin";
-
+            
             setTimeout(() => {
                 window.print();
                 btnText.innerText = originalText;
@@ -1220,11 +1380,7 @@
                 updateVoucherRanking(0);
 
                 // 6. Simpan state baru ke LocalStorage
-                // Karena variabel 'vouchers', dan value input tax/service tidak kita ubah,
-                // maka saat saveLocal dipanggil, data tersebut ikut tersimpan kembali dengan aman.
                 saveLocal();
-
-                // CATATAN: location.reload() DIHAPUS agar UX lebih mulus dan data lain tidak hilang.
             }
         }
 
@@ -1274,100 +1430,141 @@
         }
 
         let myChart = null;
+        // --- FUNGSI CHART MODE & RENDER (SAMA SEPERTI SEBELUMNYA) ---
+        function updateChartMode(mode) {
+            currentChartMode = mode;
+            
+            // Button Styles
+            ['all', 'iter', 'rec'].forEach(m => {
+                const btn = document.getElementById(`btn-chart-${m}`);
+                if(m === mode) {
+                    btn.className = "px-3 py-1.5 text-[10px] font-bold rounded-md bg-indigo-600 text-white shadow-md transition-all";
+                } else {
+                    btn.className = "px-3 py-1.5 text-[10px] font-bold rounded-md text-slate-500 hover:text-indigo-600 transition-all";
+                }
+            });
 
-        function renderChart(d) {
+            // Explanation Text
+            const exp = document.getElementById('chart-explanation');
+            if(mode === 'all') exp.innerText = "Grafik ini membandingkan waktu eksekusi Iteratif vs Rekursif seiring bertambahnya jumlah input (N).";
+            if(mode === 'iter') exp.innerText = "Iteratif: Waktu meningkat secara linear/stabil karena loop tabel selalu terisi penuh.";
+            if(mode === 'rec') exp.innerText = "Rekursif: Waktu bisa bervariasi tergantung seberapa banyak cabang pohon keputusan yang dipotong (pruning).";
+
+            if(chartDataStore) {
+                renderChart(chartDataStore, mode);
+            }
+        }
+
+        function renderChart(d, mode = 'all') {
             const ctx = document.getElementById('complexityChart').getContext('2d');
             if (myChart) myChart.destroy();
-            const totalDuration = 2000;
+
+            let datasets = [];
+            
+            const datasetIter = {
+                label: 'Iteratif',
+                data: d.iterative,
+                borderColor: '#4F46E5',
+                backgroundColor: 'rgba(79, 70, 229, 0.1)',
+                fill: true,
+                tension: 0.3,
+                pointRadius: 4
+            };
+
+            const datasetRec = {
+                label: 'Rekursif',
+                data: d.recursive,
+                borderColor: '#EC4899',
+                backgroundColor: 'rgba(236, 72, 153, 0.05)',
+                borderDash: [5, 5],
+                tension: 0.3,
+                pointRadius: 4,
+                fill: false
+            };
+
+            if (mode === 'all') datasets = [datasetIter, datasetRec];
+            else if (mode === 'iter') datasets = [datasetIter];
+            else if (mode === 'rec') datasets = [datasetRec];
+
+            const totalDuration = 1000;
             const delayBetweenPoints = totalDuration / d.labels.length;
-            const previousY = (ctx) => ctx.index === 0 ? ctx.chart.scales.y.getPixelForValue(100) : ctx.chart
-                .getDatasetMeta(ctx.datasetIndex).data[ctx.index - 1].getProps(['y'], true).y;
             const animation = {
                 x: {
                     type: 'number',
                     easing: 'linear',
                     duration: delayBetweenPoints,
-                    from: NaN,
+                    from: NaN, 
                     delay(ctx) {
-                        return ctx.type !== 'data' || ctx.xStarted ? 0 : ctx.index * delayBetweenPoints;
-                    },
-                    fn(ctx) {
-                        if (ctx.type === 'data') ctx.xStarted = true;
+                        if (ctx.type !== 'data' || ctx.xStarted) return 0;
+                        ctx.xStarted = true;
+                        return ctx.index * delayBetweenPoints;
                     }
                 },
                 y: {
                     type: 'number',
                     easing: 'linear',
                     duration: delayBetweenPoints,
-                    from: previousY,
+                    from: (ctx) => ctx.index === 0 ? ctx.chart.scales.y.getPixelForValue(0) : ctx.chart.getDatasetMeta(ctx.datasetIndex).data[ctx.index - 1].getProps(['y'], true).y,
                     delay(ctx) {
-                        return ctx.type !== 'data' || ctx.yStarted ? 0 : ctx.index * delayBetweenPoints;
-                    },
-                    fn(ctx) {
-                        if (ctx.type === 'data') ctx.yStarted = true;
+                        if (ctx.type !== 'data' || ctx.yStarted) return 0;
+                        ctx.yStarted = true;
+                        return ctx.index * delayBetweenPoints;
                     }
                 }
             };
+
             myChart = new Chart(ctx, {
                 type: 'line',
                 data: {
                     labels: d.labels.map(l => 'N=' + l),
-                    datasets: [{
-                        label: 'Iteratif',
-                        data: d.iterative,
-                        borderColor: '#4F46E5',
-                        backgroundColor: 'rgba(79, 70, 229, 0.1)',
-                        fill: true,
-                        tension: 0.3,
-                        pointRadius: 4
-                    }, {
-                        label: 'Rekursif',
-                        data: d.recursive,
-                        borderColor: '#EC4899',
-                        borderDash: [5, 5],
-                        tension: 0.3,
-                        pointRadius: 4
-                    }]
+                    datasets: datasets
                 },
                 options: {
                     animation,
                     responsive: true,
                     maintainAspectRatio: false,
+                    interaction: {
+                        mode: 'index',
+                        intersect: false,
+                    },
                     plugins: {
                         legend: {
                             labels: {
-                                font: {
-                                    family: 'Poppins'
+                                font: { family: 'Poppins', size: 10 },
+                                usePointStyle: true,
+                                boxWidth: 6
+                            }
+                        },
+                        tooltip: {
+                            backgroundColor: 'rgba(30, 41, 59, 0.9)',
+                            titleFont: { family: 'Poppins', size: 11 },
+                            bodyFont: { family: 'JetBrains Mono', size: 10 },
+                            padding: 10,
+                            callbacks: {
+                                label: function(context) {
+                                    return context.dataset.label + ': ' + context.parsed.y.toFixed(3) + ' ms';
                                 }
                             }
                         }
                     },
                     scales: {
                         x: {
-                            grid: {
-                                display: false
-                            },
-                            ticks: {
-                                font: {
-                                    family: 'JetBrains Mono'
-                                }
-                            }
+                            grid: { display: false },
+                            ticks: { font: { family: 'JetBrains Mono', size: 9 }, color: '#94a3b8' },
+                            border: { display: false }
                         },
                         y: {
-                            grid: {
-                                color: '#F1F5F9'
-                            },
-                            ticks: {
-                                font: {
-                                    family: 'JetBrains Mono'
-                                }
-                            }
+                            grid: { color: '#F1F5F9', borderDash: [2, 2] },
+                            ticks: { font: { family: 'JetBrains Mono', size: 9 }, color: '#94a3b8' },
+                            border: { display: false },
+                            beginAtZero: true
                         }
                     }
                 }
             });
         }
     </script>
+
     <footer class="mt-12 pb-4 text-center">
         <div
             class="inline-flex items-center gap-2 px-6 py-3 bg-white/50 backdrop-blur-sm rounded-full border border-slate-200 shadow-sm transition-all hover:shadow-md">

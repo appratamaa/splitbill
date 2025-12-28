@@ -33,6 +33,7 @@ class KnapsackController extends Controller
         }
 
         // --- 2. KNAPSACK PREPARATION (0/1) ---
+        // Scale down untuk mengurangi beban memori PHP jika nominal besar
         $scale = 1000; 
         $W = floor($subtotal / $scale);
         
@@ -54,11 +55,11 @@ class KnapsackController extends Controller
                 $discAmount = (float) str_replace('.', '', $discRaw);
             }
 
-            // Validasi Dasar
+            // Validasi Dasar (Hanya masukkan jika syarat min belanja terpenuhi)
             if ($minSpend <= $subtotal && $minSpend >= 0) {
-                 $wt[] = floor($minSpend / $scale);
-                 $val[] = (int) $discAmount;
-                 $codes[] = strtoupper($v['code']); // Force Uppercase
+                 $wt[] = floor($minSpend / $scale); // Weight (Scaled)
+                 $val[] = (int) $discAmount;        // Value
+                 $codes[] = strtoupper($v['code']); 
             }
         }
         $n = count($val);
@@ -71,9 +72,11 @@ class KnapsackController extends Controller
         $endIter = microtime(true);
         $timeIter = ($endIter - $startIter) * 1000;
 
-        // Logika: Hanya gunakan 1 voucher terbaik
+        // Logika: Hanya gunakan 1 voucher terbaik (Modifikasi aturan bisnis umum)
         $bestVoucherCode = "-";
         $finalDiscount = 0;
+        $bestVoucherVal = 0;
+        $bestVoucherWt = 0;
         
         if (!empty($usedIndices)) {
             $maxSingleVal = -1;
@@ -87,6 +90,8 @@ class KnapsackController extends Controller
             if($bestIdx != -1) {
                 $finalDiscount = $maxSingleVal;
                 $bestVoucherCode = $codes[$bestIdx];
+                $bestVoucherVal = $val[$bestIdx];
+                $bestVoucherWt = $wt[$bestIdx] * $scale; // Kembalikan ke skala asli untuk display
             }
         }
         
@@ -149,7 +154,14 @@ class KnapsackController extends Controller
             'members' => $memberResults,
             'algorithm' => [
                 'iterative_time' => number_format($timeIter, 4),
-                'recursive_time' => number_format($timeRec, 4)
+                'recursive_time' => number_format($timeRec, 4),
+                'best_val' => $bestVoucherVal,
+                'best_wt' => $bestVoucherWt
+            ],
+            'complexity' => [
+                'n' => $n,      // Jumlah Item
+                'w' => $W,      // Kapasitas (Scaled)
+                'total_ops' => $n * $W // Total Operasi
             ],
             'chart' => $chartData
         ]);
@@ -159,7 +171,9 @@ class KnapsackController extends Controller
 
     private function knapsackIterative($W, $wt, $val, $n)
     {
+        // Init DP Table
         $K = array_fill(0, $n + 1, array_fill(0, $W + 1, 0));
+        
         for ($i = 0; $i <= $n; $i++) {
             for ($w = 0; $w <= $W; $w++) {
                 if ($i == 0 || $w == 0) $K[$i][$w] = 0;
@@ -167,10 +181,13 @@ class KnapsackController extends Controller
                 else $K[$i][$w] = $K[$i - 1][$w];
             }
         }
+        
+        // Backtracking untuk mencari item yang dipilih
         $res = $K[$n][$W];
         $maxValue = $res;
         $w = $W;
         $selectedIndices = [];
+        
         for ($i = $n; $i > 0 && $res > 0; $i--) {
             if ($res == $K[$i - 1][$w]) continue;
             else {
@@ -186,29 +203,41 @@ class KnapsackController extends Controller
     private function knapsackRecursive($W, $wt, $val, $n)
     {
         if ($n == 0 || $W == 0) return 0;
+        
         $key = $n . '-' . $W;
         if (isset($this->memo[$key])) return $this->memo[$key];
-        if ($wt[$n - 1] > $W) return $this->memo[$key] = $this->knapsackRecursive($W, $wt, $val, $n - 1);
-        else return $this->memo[$key] = max($val[$n - 1] + $this->knapsackRecursive($W - $wt[$n - 1], $wt, $val, $n - 1), $this->knapsackRecursive($W, $wt, $val, $n - 1));
+        
+        if ($wt[$n - 1] > $W) 
+            return $this->memo[$key] = $this->knapsackRecursive($W, $wt, $val, $n - 1);
+        else 
+            return $this->memo[$key] = max($val[$n - 1] + $this->knapsackRecursive($W - $wt[$n - 1], $wt, $val, $n - 1), $this->knapsackRecursive($W, $wt, $val, $n - 1));
     }
 
     private function generateBenchmarkData()
     {
+        // Benchmark dengan N yang bertambah
         $sizes = [10, 50, 100, 200, 300, 400, 500];
         $iterativeTimes = [];
         $recursiveTimes = [];
-        $W_bench = 100;
+        $W_bench = 100; // Kapasitas tetap untuk benchmark N
+        
         foreach ($sizes as $n) {
             $wt = []; $val = [];
+            // Generate Dummy Data
             for($i=0; $i<$n; $i++) { $wt[] = rand(1, 50); $val[] = rand(10, 100); }
+            
+            // Ukur Iteratif
             $t1 = microtime(true);
             $this->knapsackIterative($W_bench, $wt, $val, $n);
             $iterativeTimes[] = (microtime(true) - $t1) * 1000;
+            
+            // Ukur Rekursif
             $this->memo = [];
             $t1 = microtime(true);
             $this->knapsackRecursive($W_bench, $wt, $val, $n);
             $recursiveTimes[] = (microtime(true) - $t1) * 1000;
         }
+        
         return ['labels' => $sizes, 'iterative' => $iterativeTimes, 'recursive' => $recursiveTimes];
     }
 }
